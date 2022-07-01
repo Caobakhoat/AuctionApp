@@ -3,6 +3,8 @@ package com.example.demo_web.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
@@ -31,10 +33,10 @@ public class Auction implements Serializable {
     @Column(name = "timeEnd",nullable = false)
     private LocalDateTime timeEnd;
     @Column(name = "creatAt")
-    @CreatedBy
+    @CreationTimestamp
     private LocalDateTime creatAt;
     @Column(name = "modifyAt")
-    @LastModifiedBy
+    @UpdateTimestamp
     private LocalDateTime modifyAt;
     @Column(name = "status")
     private int status;

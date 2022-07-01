@@ -3,6 +3,8 @@ package com.example.demo_web.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
@@ -24,12 +26,11 @@ public class Transaction implements Serializable {
     @Column(name="paid",nullable = false)
     private int paid;
     @Column(name = "creatAt")
-    @CreatedBy
+    @CreationTimestamp
     private LocalDateTime creatAt;
     @Column(name = "modifyAt")
-    @LastModifiedBy
+    @UpdateTimestamp
     private LocalDateTime modifyAt;
-
     @ManyToOne
     @JoinColumn(name = "idAuction", nullable = false)
     private Auction auctionTransaction;

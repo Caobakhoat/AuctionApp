@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public RegisterResponse registerUser(RegisterRequest req){
-        System.out.println(req);
         RegisterResponse res = new RegisterResponse();
         User user =userRepository.findByUsername(req.getUsername());
         if(user!=null){

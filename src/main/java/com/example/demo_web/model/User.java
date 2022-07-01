@@ -3,6 +3,8 @@ package com.example.demo_web.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
@@ -42,10 +44,10 @@ public class User implements Serializable {
     @Column(name = "balance",nullable = false)
     private int balance;
     @Column(name = "creatAt")
-    @CreatedBy
+    @CreationTimestamp
     private LocalDateTime creatAt;
     @Column(name = "modifyAt")
-    @LastModifiedBy
+    @UpdateTimestamp
     private LocalDateTime modifyAt;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userBids")
