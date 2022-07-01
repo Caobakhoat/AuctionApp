@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head >
+
     <meta charset="UTF-8">
     <title>Login-Sinup</title>
-    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="css/login.css">
 
 </head>
 <body>
 <div class="container" id="container">
     <div class="form-container sign-up-container">
-        <form class="sign-up-form" method="POST">
+        <form  class="sign-up-form" method="POST">
             <h1 class="sign-up-text">Register User</h1>
             <p id="error"></p>
             <input name="username" type="text" placeholder="UserName" />
@@ -28,8 +30,9 @@
         </form>
     </div>
     <div class="form-container sign-in-container">
-        <form method="POST" action="/perform_login">
+        <form method="POST" action="/check-login">
             <h1>Login User</h1>
+            <p th:text="${response.getMessage()}"  ></p>
             <div class="form-group">
                 <input type="text" name="username" class="form-control"
                        placeholder="Username">
@@ -59,7 +62,7 @@
 </div>
 
 <footer>
-    <script type="text/javascript" src="./js/login.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
 </footer>
 </body>
 
