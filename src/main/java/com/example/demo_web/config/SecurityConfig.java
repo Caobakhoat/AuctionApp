@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +21,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -49,7 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Enable CORS and disable CSRF
@@ -77,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 // Swagger endpoints must be publicly accessible
                 .antMatchers("/").permitAll()
                 .antMatchers("/user/login").permitAll()
-                .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/registeruser").permitAll()
                 .anyRequest().authenticated();
 
         // Add JWT token filter
@@ -93,9 +96,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
+        config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
+        config.addAllowedOriginPattern("*");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
