@@ -5,6 +5,7 @@ import com.example.demo_web.model.User;
 import com.example.demo_web.repository.UserRepository;
 import com.example.demo_web.request.LoginRequest;
 import com.example.demo_web.request.RegisterRequest;
+import com.example.demo_web.response.GetAllUserResponse;
 import com.example.demo_web.response.LoginResponse;
 import com.example.demo_web.response.RegisterResponse;
 import com.example.demo_web.tokenAuthen.JwtTokenUtil;
@@ -107,7 +108,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return res;
         }
     }
-
+    public GetAllUserResponse getAllUser (){
+        ArrayList<User> list = (ArrayList<User>) userRepository.findAll();
+        GetAllUserResponse res = new GetAllUserResponse();
+        res.setCode(1);
+        res.setMessage("Get List User success");
+        res.setListUser(list);
+        return res;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
