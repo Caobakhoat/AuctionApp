@@ -12,6 +12,5 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAllUserResponse extends BaseResponse{
-    private ArrayList<User> listUser;
-
+    private ArrayList<User> result;
 }

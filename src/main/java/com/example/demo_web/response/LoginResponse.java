@@ -11,7 +11,6 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginResponse extends BaseResponse{
-//    private String accsesstoken;
-    private Map<String,String> result;
+    private Map<String,Object> result;
 
 }

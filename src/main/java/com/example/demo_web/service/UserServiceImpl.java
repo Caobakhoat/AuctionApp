@@ -63,11 +63,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             String accessToken = jwtTokenUtil.generateAccessToken(user);
             String refreshToken = jwtTokenUtil.generateRefreshToken(user);
             user=userRepository.findByUsername(user.getUsername());
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("token",accessToken);
-            map.put("userID", String.valueOf(user.getId()));
+            map.put("user", user);
             map.put("refreshToken",refreshToken);
-            map.put("role", user.getRole());
             res.setResult(map);
             res.setCode(1);
             res.setMessage("Login success");
@@ -113,7 +112,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         GetAllUserResponse res = new GetAllUserResponse();
         res.setCode(1);
         res.setMessage("Get List User success");
-        res.setListUser(list);
+        res.setResult(list);
         return res;
     }
 

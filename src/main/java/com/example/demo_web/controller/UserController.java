@@ -21,10 +21,8 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public BaseResponse checklogin( @RequestBody LoginRequest req){
-        System.out.println("cbk");
         BaseResponse res = new BaseResponse();
         res=userService.checkLogin(req);
-        System.out.println(res);
         return res;
     }
     @PostMapping(value = "/register")
