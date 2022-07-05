@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             newuser.setUsername(req.getUsername());
             userRepository.save(newuser);
             res.setCode(messageUserConfig.CODE_SUCCESS);
-            res.setMessage(messageUserConfig.MESSGAGE_REGISTERFAILED);
+            res.setMessage(messageUserConfig.MESSGAGE_REGISTERSUCCESS);
             res.setResult(true);
             return res;
         }

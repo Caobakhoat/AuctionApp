@@ -10,8 +10,8 @@ public class MessageUserConfig {
     public final String MESSGAGE_LOGINSUCCESS ="login success";
     public final String MESSGAGE_LOGINFAILED ="username or password incorrect";
 
-    public final String MESSGAGE_REGISTERSUCCESS="username already exist";
-    public final String MESSGAGE_REGISTERFAILED="register success";
+    public final String MESSGAGE_REGISTERSUCCESS="register success";
+    public final String MESSGAGE_REGISTERFAILED=" username already exist";
     public final String MESSGAGE_GETALLUSER="get all user success";
 
 }
