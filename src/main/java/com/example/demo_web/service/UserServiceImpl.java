@@ -1,6 +1,7 @@
 package com.example.demo_web.service;
 
 
+import com.example.demo_web.config.MessageUserConfig;
 import com.example.demo_web.model.User;
 import com.example.demo_web.repository.UserRepository;
 import com.example.demo_web.request.LoginRequest;
@@ -44,6 +45,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private final MessageUserConfig messageUserConfig;
     @Override
     public LoginResponse checkLogin(LoginRequest req) {
         LoginResponse res = new LoginResponse();
@@ -57,24 +60,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                                     user.getUsername(), user.getPassword()
                             )
                     );
-
-            User us = (User)authenticate.getPrincipal();
             String accessToken = jwtTokenUtil.generateAccessToken(user);
-            String refreshToken = jwtTokenUtil.generateRefreshToken(user);
             user=userRepository.findByUsername(user.getUsername());
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("token",accessToken);
             map.put("user", user);
-            map.put("refreshToken",refreshToken);
             res.setResult(map);
-            res.setCode(1);
-            res.setMessage("Login success");
+            res.setCode(messageUserConfig.CODE_SUCCESS);
+            res.setMessage(messageUserConfig.MESSGAGE_LOGINSUCCESS);
             return res;
 
         }
         catch (BadCredentialsException ex) {
-            res.setCode(-1);
-            res.setMessage("login failed");
+            res.setCode(messageUserConfig.CODE_FAILED);
+            res.setMessage(messageUserConfig.MESSGAGE_LOGINFAILED);
             return res;
         }
     }
@@ -83,8 +82,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         RegisterResponse res = new RegisterResponse();
         User user =userRepository.findByUsername(req.getUsername());
         if(user!=null){
-            res.setCode(-1);
-            res.setMessage("register faild");
+            res.setCode(messageUserConfig.CODE_FAILED);
+            res.setMessage(messageUserConfig.MESSGAGE_REGISTERFAILED);
             res.setResult(false);
             return res;
         }else{
@@ -98,8 +97,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             newuser.setName(req.getName());
             newuser.setUsername(req.getUsername());
             userRepository.save(newuser);
-            res.setCode(1);
-            res.setMessage("register succsess");
+            res.setCode(messageUserConfig.CODE_SUCCESS);
+            res.setMessage(messageUserConfig.MESSGAGE_REGISTERFAILED);
             res.setResult(true);
             return res;
         }
@@ -107,8 +106,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public GetAllUserResponse getAllUser (){
         ArrayList<User> list = (ArrayList<User>) userRepository.findAll();
         GetAllUserResponse res = new GetAllUserResponse();
-        res.setCode(1);
-        res.setMessage("Get List User success");
+        res.setCode(messageUserConfig.CODE_SUCCESS);
+        res.setMessage(messageUserConfig.MESSGAGE_GETALLUSER);
         res.setResult(list);
         return res;
     }
