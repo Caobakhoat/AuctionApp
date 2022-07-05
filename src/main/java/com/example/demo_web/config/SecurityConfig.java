@@ -80,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 // Swagger endpoints must be publicly accessible
                 .antMatchers("/").permitAll()
                 .antMatchers("/user/login").permitAll()
-                .antMatchers("/user/registeruser").permitAll()
+                .antMatchers("/user/register").permitAll()
                 .anyRequest().authenticated();
 
         // Add JWT token filter

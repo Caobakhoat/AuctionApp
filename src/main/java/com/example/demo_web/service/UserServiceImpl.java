@@ -59,7 +59,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     );
 
             User us = (User)authenticate.getPrincipal();
-
             String accessToken = jwtTokenUtil.generateAccessToken(user);
             String refreshToken = jwtTokenUtil.generateRefreshToken(user);
             user=userRepository.findByUsername(user.getUsername());
@@ -74,10 +73,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         }
         catch (BadCredentialsException ex) {
-            System.out.println("here bug");
-            System.out.println(ex.getMessage());
             res.setCode(-1);
-            res.setMessage("login faild");
+            res.setMessage("login failed");
             return res;
         }
     }

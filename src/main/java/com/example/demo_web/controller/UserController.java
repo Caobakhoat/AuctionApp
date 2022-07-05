@@ -8,6 +8,8 @@ import com.example.demo_web.service.UserServiceImpl;
 import com.example.demo_web.tokenAuthen.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,22 +22,28 @@ public class UserController {
     private final JwtTokenUtil jwtTokenUtil;
 
     @PostMapping(value = "/login")
-    public BaseResponse checklogin( @RequestBody LoginRequest req){
+    public ResponseEntity checklogin(@RequestBody LoginRequest req){
         BaseResponse res = new BaseResponse();
         res=userService.checkLogin(req);
-        return res;
+        if(res.getCode()==-1){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
+        }
+        return ResponseEntity.ok().body(res);
     }
     @PostMapping(value = "/register")
-    public BaseResponse registerUser(@RequestBody RegisterRequest req){
+    public ResponseEntity registerUser(@RequestBody RegisterRequest req){
         BaseResponse res = new BaseResponse();
         res=userService.registerUser(req);
-        return res;
+        if(res.getCode()==-1){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(res);
+        }
+        return ResponseEntity.ok().body(res);
     }
     @GetMapping(value = "/getAllUser")
-    public  BaseResponse getAllUser(){
+    public  ResponseEntity getAllUser(){
         BaseResponse res = new BaseResponse();
         res= userService.getAllUser();
-        return res;
+        return ResponseEntity.ok().body(res);
     }
 
 }
