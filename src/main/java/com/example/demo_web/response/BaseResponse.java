@@ -12,5 +12,4 @@ import java.util.Optional;
 public class BaseResponse {
     protected int code;
     protected String message;
-    protected Object result;
 }
