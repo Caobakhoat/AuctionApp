@@ -103,6 +103,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return res;
         }
     }
+    @Override
     public GetAllUserResponse getAllUser (){
         ArrayList<User> list = (ArrayList<User>) userRepository.findAll();
         GetAllUserResponse res = new GetAllUserResponse();

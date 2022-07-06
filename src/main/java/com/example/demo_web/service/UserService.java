@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface UserService  {
     BaseResponse checkLogin(LoginRequest req);
     BaseResponse registerUser(RegisterRequest req);
+    BaseResponse getAllUser ();
 }

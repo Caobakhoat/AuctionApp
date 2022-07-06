@@ -27,12 +27,20 @@ public class Item implements Serializable {
     private String name;
     @Column(name = "description",nullable = false)
     private String description;
+    @Column(name = "nameImage",nullable = false)
+    private String nameImage;
     @Column(name = "creatAt")
     @CreationTimestamp
     private LocalDateTime creatAt;
     @Column(name = "modifyAt")
     @UpdateTimestamp
     private LocalDateTime modifyAt;
+    @Transient
+    public String getPhotosImagePath() {
+        if (nameImage == null ) return null;
+
+        return "src/main/resources/static/item-photos/" + id + "/" + nameImage;
+    }
 
 
 }
