@@ -1,4 +1,4 @@
-import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons";
 import React, {useState} from "react";
 import {Link, Navigate, useNavigate} from "react-router-dom";
 import {Button, DatePicker, Form, Input, Row} from "antd";
@@ -21,7 +21,7 @@ const Register = ({user}: Props) => {
     if (user) {
         return <Navigate to="/"/>;
     }
-    const dateFormat = 'DD/MM/YYYY'
+    const dateFormat = 'DD/MM/YYYY';
     return (
         <div>
             <Row justify="center" align="middle">
@@ -51,30 +51,32 @@ const Register = ({user}: Props) => {
                         }}
                         autoComplete="off"
                     >
-                        <Form.Item
-                            label="Username"
-                            name="username"
-                            className="mb-16 fw-500"
-                            rules={[{required: true}]}
-                        >
-                            <Input
-                                prefix={<UserOutlined className="site-form-item-icon"/>}
-                                placeholder="username"
-                            />
-                        </Form.Item>
+                        <Row className="d-flex justify-space-between">
+                            <Form.Item
+                                label="Username"
+                                name="username"
+                                className="mb-16 fw-500"
+                                rules={[{required: true}]}
+                            >
+                                <Input
+                                    prefix={<UserOutlined className="site-form-item-icon"/>}
+                                    placeholder="username"
+                                />
+                            </Form.Item>
 
-                        <Form.Item
-                            label="Password"
-                            name="password"
-                            className="mb-16 fw-500"
-                            validateTrigger={false}
-                            rules={[{required: true}]}
-                        >
-                            <Input.Password
-                                prefix={<LockOutlined className="site-form-item-icon"/>}
-                                placeholder="password"
-                            />
-                        </Form.Item>
+                            <Form.Item
+                                label="Password"
+                                name="password"
+                                className="mb-16 fw-500"
+                                validateTrigger={false}
+                                rules={[{required: true}]}
+                            >
+                                <Input.Password
+                                    prefix={<LockOutlined className="site-form-item-icon"/>}
+                                    placeholder="password"
+                                />
+                            </Form.Item>
+                        </Row>
                         <Form.Item
                             label="Name"
                             name="name"
@@ -93,7 +95,7 @@ const Register = ({user}: Props) => {
                             rules={[{required: true,type:"email"}]}
                         >
                             <Input
-                                prefix={<UserOutlined className="site-form-item-icon"/>}
+                                prefix={<MailOutlined className="site-form-item-icon"/>}
                                 placeholder="email"
                             />
                         </Form.Item>
@@ -114,7 +116,7 @@ const Register = ({user}: Props) => {
                             className="mb-16 fw-500"
                             rules={[{required: true}]}
                         >
-                            <DatePicker format={dateFormat}/>
+                            <DatePicker format={dateFormat} className="w100p"/>
                         </Form.Item>
                         <Form.Item
                             label="Balance"

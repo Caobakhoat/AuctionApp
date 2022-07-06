@@ -6,6 +6,7 @@ export interface User {
     email:string;
     dob:string;
     address:string;
+    balance:number;
 }
 
 export interface LoginResponse{
