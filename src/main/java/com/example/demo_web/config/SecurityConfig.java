@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Enable CORS and disable CSRF

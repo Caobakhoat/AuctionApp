@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseAddItem extends BaseResponse{
+public class AddItemResponse extends BaseResponse{
     private Item result;
 }

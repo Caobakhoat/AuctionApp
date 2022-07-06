@@ -2,8 +2,8 @@ package com.example.demo_web.controller;
 
 import com.example.demo_web.config.FileUploadUtil;
 import com.example.demo_web.model.Item;
-import com.example.demo_web.response.BaseResponse;
-import com.example.demo_web.response.ResponseAddItem;
+import com.example.demo_web.response.GetAllItemResponse;
+import com.example.demo_web.response.AddItemResponse;
 import com.example.demo_web.service.ItemServiceIpml;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,8 @@ public class ItemController {
     ItemServiceIpml itemServiceIpml;
 
     @PostMapping(value = "/addItem")
-    public ResponseAddItem addItem(@RequestParam("imageItem") MultipartFile multipartFile, @RequestParam String description,@RequestParam String name) throws IOException {
-        ResponseAddItem res = new ResponseAddItem();
+    public AddItemResponse addItem(@RequestParam("imageItem") MultipartFile multipartFile, @RequestParam String description, @RequestParam String name) throws IOException {
+        AddItemResponse res = new AddItemResponse();
         Item item = new Item();
         item.setDescription(description);
         item.setName(name);
@@ -37,6 +37,12 @@ public class ItemController {
         res.setCode(1);
         res.setMessage("addItem success");
         res.setResult(saveItem);
+        return res;
+    }
+    @GetMapping(value = "/getAllItem")
+    public GetAllItemResponse getAllItemResponse (){
+        GetAllItemResponse res = new GetAllItemResponse();
+        res =itemServiceIpml.getAllItem();
         return res;
     }
 }
