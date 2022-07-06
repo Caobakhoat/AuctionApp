@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             newuser.setDob(req.getDob());
             newuser.setEmail(req.getEmail());
             newuser.setPassword(passwordEncoder.encode(req.getPassword()));
-            newuser.setRole("guest");
+            newuser.setRole("GUEST");
             newuser.setName(req.getName());
             newuser.setUsername(req.getUsername());
             userRepository.save(newuser);

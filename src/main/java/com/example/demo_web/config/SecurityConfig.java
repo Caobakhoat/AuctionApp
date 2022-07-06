@@ -8,9 +8,9 @@ import com.example.demo_web.tokenAuthen.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,9 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  *
@@ -40,9 +37,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserRepository userRepo;
     private final JwtTokenFilter jwtTokenFilter;
+//    @Autowired
+
 
     /**
-     *
      * @param userRepo
      * @param jwtTokenFilter
      */
@@ -53,6 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -75,14 +75,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                         }
                 )
                 .and();
-
         // Set permissions on endpoints
         http.authorizeRequests()
                 // Swagger endpoints must be publicly accessible
                 .antMatchers("/").permitAll()
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/user/register").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
 
         // Add JWT token filter
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

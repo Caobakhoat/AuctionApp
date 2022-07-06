@@ -35,12 +35,6 @@ public class Item implements Serializable {
     @Column(name = "modifyAt")
     @UpdateTimestamp
     private LocalDateTime modifyAt;
-    @Transient
-    public String getPhotosImagePath() {
-        if (nameImage == null ) return null;
-
-        return "src/main/resources/static/item-photos/" + id + "/" + nameImage;
-    }
 
 
 }

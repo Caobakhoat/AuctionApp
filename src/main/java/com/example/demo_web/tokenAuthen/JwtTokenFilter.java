@@ -29,7 +29,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
     @Autowired
     private UserRepository userRepo;
-//    @Autowired
+
     private PasswordEncoder pe;
 
     @Override

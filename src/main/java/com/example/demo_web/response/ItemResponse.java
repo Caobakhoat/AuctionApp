@@ -5,11 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-
-public class GetAllItemResponse extends BaseResponse{
-    private ArrayList<ItemResponse> result;
+@AllArgsConstructor
+public class ItemResponse  {
+    private Item item;
+    private byte[] imageItem;
 }

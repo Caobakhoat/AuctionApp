@@ -45,5 +45,8 @@ public class UserController {
         res= userService.getAllUser();
         return ResponseEntity.ok().body(res);
     }
-
+    @GetMapping(value = "/")
+    public String test (){
+        return "null";
+    }
 }
