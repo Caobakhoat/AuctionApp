@@ -16,7 +16,6 @@ type Props = {
     user: User|null;
 };
 const Main = ({user}:Props) => {
-    // console.log(user);
     if (!user) {
         return <Navigate to="/login" />;
     }

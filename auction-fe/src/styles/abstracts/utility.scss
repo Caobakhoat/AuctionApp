@@ -279,8 +279,14 @@ $borderStyles: ("dotted", "dashed", "solid", "double", "groove", "ridge", "inset
 .max-w-350 {
     max-width: 350px !important;
 }
+.max-w-200 {
+    max-width: 200px !important;
+}
 .min-h-563 {
     min-height: 563px !important;
+}
+.min-h-275 {
+    min-height: 275px !important;
 }
 .w100p {
     width: 100% !important;
