@@ -9,14 +9,14 @@ import Home from "./features/home/Home";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+      <BrowserRouter>
+        <Routes>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/" element={<Home/>}/>
           <Route path="*" element={<Main/>}/>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
   );
 }
 

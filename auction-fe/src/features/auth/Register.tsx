@@ -4,8 +4,8 @@ import {Link, Navigate, useNavigate} from "react-router-dom";
 import {Button, DatePicker, Form, Input, Row} from "antd";
 import {useRegisterMutation} from "./auth.api";
 import {connect} from "react-redux";
-import {RootState} from "../../store";
-import {User} from "../../model/user.model";
+import {RootState} from "@/store";
+import {User} from "@/model/user.model";
 
 
 const mapState = (state: RootState) => ({
