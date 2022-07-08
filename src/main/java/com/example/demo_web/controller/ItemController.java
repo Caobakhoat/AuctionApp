@@ -7,11 +7,15 @@ import com.example.demo_web.response.AddItemResponse;
 import com.example.demo_web.service.ItemServiceIpml;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLConnection;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
@@ -20,6 +24,7 @@ import java.io.IOException;
 public class ItemController {
     @Autowired
     ItemServiceIpml itemServiceIpml;
+    private static final String EXTERNAL_FILE_PATH = "/Users/bakhoat/Documents/demo_web/src/main/resources/static/item-photos/";
 
     @PostMapping(value = "/addItem")
     public AddItemResponse addItem(@RequestParam("imageItem") MultipartFile multipartFile, @RequestParam String description, @RequestParam String name) throws IOException {
@@ -45,4 +50,24 @@ public class ItemController {
         res =itemServiceIpml.getAllItem();
         return res;
     }
-}
+
+
+        @RequestMapping("/imageItem/{id}/{fileName:.+}")
+        public void downloadPDFResource(HttpServletRequest request, HttpServletResponse response,
+                                        @PathVariable("fileName") String fileName, @PathVariable("id") String id) throws IOException {
+            File file = new File(EXTERNAL_FILE_PATH+id+"/" + fileName);
+            if (file.exists()) {
+                String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+                if (mimeType == null) {
+                    mimeType = "application/octet-stream";
+                }
+                response.setContentType(mimeType);
+                response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+                response.setContentLength((int) file.length());
+                InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+                FileCopyUtils.copy(inputStream, response.getOutputStream());
+
+            }
+        }
+    }
+

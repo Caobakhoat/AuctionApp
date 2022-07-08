@@ -78,10 +78,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         // Set permissions on endpoints
         http.authorizeRequests()
                 // Swagger endpoints must be publicly accessible
-                .antMatchers("/").permitAll()
+                .antMatchers("/item/imageItem/**").permitAll()
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/user/register").permitAll()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
 
         // Add JWT token filter
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

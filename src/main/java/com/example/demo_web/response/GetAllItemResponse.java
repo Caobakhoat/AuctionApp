@@ -11,5 +11,5 @@ import java.util.ArrayList;
 @NoArgsConstructor
 
 public class GetAllItemResponse extends BaseResponse{
-    private ArrayList<ItemResponse> result;
+    private ArrayList<Item> result;
 }
