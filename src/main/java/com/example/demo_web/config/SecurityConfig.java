@@ -80,7 +80,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/user/register").permitAll()
                 .antMatchers("/admin/getAllUser").hasAuthority("ROLE_admin")
                 .antMatchers("/item/getAllItem").hasAuthority("ROLE_admin")
-                .antMatchers("/auction/getAllAuction").hasAuthority("ROLE_admin")
+                .antMatchers("/item/addItem").hasAuthority("ROLE_admin")
+                .antMatchers("/item/updateItem").hasAuthority("ROLE_admin")
+                .antMatchers("/auction/getAllAuction").permitAll()
+                .antMatchers("/auction/addAuction").hasAuthority("ROLE_admin")
+                .antMatchers("/auction/updateAuction").hasAuthority("ROLE_admin")
+                .antMatchers("/bids/addBids").permitAll()
                 .anyRequest().authenticated();
 
         // Add JWT token filter
