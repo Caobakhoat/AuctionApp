@@ -10,40 +10,60 @@ import binhco from "../../assets/img/binhco100tuoi.jpeg";
 import bathuong from "../../assets/img/bathuongco.jpg";
 
 const mapState = (state: RootState) => ({
-  user: state.auth.user
-})
+  user: state.auth.user,
+});
 type Props = {
   user: User | null;
 };
 const Home = ({ user }: Props) => {
-  console.log(user)
-  const navigate = useNavigate()
+  console.log(user);
+  const navigate = useNavigate();
   const toAdminPage = () => {
     navigate("/admin");
-  }
+  };
   return (
     <>
       <div className="h-200 text-center bg-light-blue-100 d-flex justify-center items-center">
         <div className="fs-100 fw-700 text-white ">Auction App</div>
       </div>
       <div className="h-62 d-flex items-center justify-space-between bg-deep-blue-100">
-        <div className="logo ml-32 cursor-pointer" onClick={() => toAdminPage()}>
+        <div
+          className="logo ml-32 cursor-pointer"
+          onClick={() => toAdminPage()}
+        >
           <img src={home} width={40} height={40} alt="Home" />
         </div>
         <div className="search w-500 ml-200">
-          <Search placeholder="input search text" allowClear size="large" enterButton />
+          <Search
+            placeholder="input search text"
+            allowClear
+            size="large"
+            enterButton
+          />
         </div>
         <div className="user mr-32">
-          {user ? (<div className="text-white fs-24 cursor-pointer">{user?.name}</div>) : (<div className="d-flex">
-            <div onClick={() => {
-              navigate("/login")
-            }} className="text-white fs-24 cursor-pointer mr-20">Login
+          {user ? (
+            <div className="text-white fs-24 cursor-pointer">{user?.name}</div>
+          ) : (
+            <div className="d-flex">
+              <div
+                onClick={() => {
+                  navigate("/login");
+                }}
+                className="text-white fs-24 cursor-pointer mr-20"
+              >
+                Login
+              </div>
+              <div
+                onClick={() => {
+                  navigate("/register");
+                }}
+                className="text-white fs-24 cursor-pointer"
+              >
+                Register
+              </div>
             </div>
-            <div onClick={() => {
-              navigate("/register")
-            }} className="text-white fs-24 cursor-pointer">Register
-            </div>
-          </div>)}
+          )}
         </div>
       </div>
       <Row gutter={32} className="py-32 px-100 m-0">
@@ -56,7 +76,6 @@ const Home = ({ user }: Props) => {
             >
               <h3>Binh co 100 tuoi</h3>
             </Card>
-
           </div>
         </Col>
         <Col className="gutter-row" span={6}>
@@ -68,7 +87,6 @@ const Home = ({ user }: Props) => {
             >
               <h3>Bat huong co 100 tuoi</h3>
             </Card>
-
           </div>
         </Col>
         <Col className="gutter-row" span={6}>
@@ -80,7 +98,6 @@ const Home = ({ user }: Props) => {
             >
               <h3>Binh co 100 tuoi</h3>
             </Card>
-
           </div>
         </Col>
         <Col className="gutter-row" span={6}>
@@ -92,13 +109,12 @@ const Home = ({ user }: Props) => {
             >
               <h3>Binh co 100 tuoi</h3>
             </Card>
-
           </div>
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
 
 // export default Home;
-export default connect(mapState, {})(Home)
+export default connect(mapState, {})(Home);

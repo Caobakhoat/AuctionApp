@@ -8,7 +8,6 @@ import com.example.demo_web.tokenAuthen.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,7 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserRepository userRepo;
     private final JwtTokenFilter jwtTokenFilter;
-//    @Autowired
 
 
     /**
@@ -51,7 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
-
 
 
     @Override
@@ -81,6 +78,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/item/imageItem/**").permitAll()
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/getAllUser").hasAuthority("ROLE_admin")
+                .antMatchers("/item/getAllItem").hasAuthority("ROLE_admin")
+                .antMatchers("/auction/getAllAuction").hasAuthority("ROLE_admin")
                 .anyRequest().authenticated();
 
         // Add JWT token filter
