@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/item/imageItem/**").permitAll()
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/user/register").permitAll()
-                .antMatchers("/user/getAllUser").hasAuthority("ROLE_admin")
+                .antMatchers("/admin/getAllUser").hasAuthority("ROLE_admin")
                 .antMatchers("/item/getAllItem").hasAuthority("ROLE_admin")
                 .antMatchers("/auction/getAllAuction").hasAuthority("ROLE_admin")
                 .anyRequest().authenticated();

@@ -1,7 +1,7 @@
 package com.example.demo_web.service;
 
 
-import com.example.demo_web.config.MessageUserConfig;
+import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.User;
 import com.example.demo_web.repository.UserRepository;
 import com.example.demo_web.request.LoginRequest;
@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 
-import static java.lang.String.format;
 
 @Service
 @Transactional
@@ -42,7 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final JwtTokenUtil jwtTokenUtil;
     @Autowired
-    private final MessageUserConfig messageUserConfig;
+    private final MessageConfig messageConfig;
 
 
 
@@ -66,14 +65,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             map.put("token",accessToken);
             map.put("user", user);
             res.setResult(map);
-            res.setCode(messageUserConfig.CODE_SUCCESS);
-            res.setMessage(messageUserConfig.MESSGAGE_LOGINSUCCESS);
+            res.setCode(messageConfig.CODE_SUCCESS);
+            res.setMessage(messageConfig.MESSGAGE_LOGINSUCCESS);
             return res;
 
         }
         catch (BadCredentialsException ex) {
-            res.setCode(messageUserConfig.CODE_FAILED);
-            res.setMessage(messageUserConfig.MESSGAGE_LOGINFAILED);
+            res.setCode(messageConfig.CODE_FAILED);
+            res.setMessage(messageConfig.MESSGAGE_LOGINFAILED);
             return res;
         }
     }
@@ -82,8 +81,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         RegisterResponse res = new RegisterResponse();
         User user =userRepository.findByUsername(req.getUsername());
         if(user!=null){
-            res.setCode(messageUserConfig.CODE_FAILED);
-            res.setMessage(messageUserConfig.MESSGAGE_REGISTERFAILED);
+            res.setCode(messageConfig.CODE_FAILED);
+            res.setMessage(messageConfig.MESSGAGE_REGISTERFAILED);
             res.setResult(false);
             return res;
         }else{
@@ -97,8 +96,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             newuser.setName(req.getName());
             newuser.setUsername(req.getUsername());
             userRepository.save(newuser);
-            res.setCode(messageUserConfig.CODE_SUCCESS);
-            res.setMessage(messageUserConfig.MESSGAGE_REGISTERSUCCESS);
+            res.setCode(messageConfig.CODE_SUCCESS);
+            res.setMessage(messageConfig.MESSGAGE_REGISTERSUCCESS);
             res.setResult(true);
             return res;
         }
@@ -107,15 +106,52 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public GetAllUserResponse getAllUser (){
         ArrayList<User> list = (ArrayList<User>) userRepository.findAll();
         GetAllUserResponse res = new GetAllUserResponse();
-        res.setCode(messageUserConfig.CODE_SUCCESS);
-        res.setMessage(messageUserConfig.MESSGAGE_GETALLUSER);
+        res.setCode(messageConfig.CODE_SUCCESS);
+        res.setMessage(messageConfig.MESSGAGE_GETALLUSER);
         res.setResult(list);
         return res;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
       return userRepository.findByUsername(username);
     }
 
+    @Override
+    public LoginResponse checkLoginAdmin(LoginRequest req) {
+        LoginResponse res = new LoginResponse();
+        try {
+            User user = new User();
+            user.setUsername(req.getUsername());
+            user.setPassword(req.getPassword());
+            Authentication authenticate = authenticationManager
+                    .authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    user.getUsername(), user.getPassword()
+                            )
+                    );
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
+            String accessToken = jwtTokenUtil.generateAccessToken(user);
+            user = userRepository.findByUsername(user.getUsername());
+
+            if(user.getRole()!="admin"){
+                res.setCode(messageConfig.CODE_UNAUTHOR_ADMIN);
+                res.setMessage(messageConfig.MESSGAGE_LOGINFAILED);
+                return res;
+            }
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("token", accessToken);
+            map.put("user", user);
+            res.setResult(map);
+            res.setCode(messageConfig.CODE_SUCCESS);
+            res.setMessage(messageConfig.MESSGAGE_LOGINSUCCESS);
+            return res;
+
+        } catch (BadCredentialsException ex) {
+            res.setCode(messageConfig.CODE_FAILED);
+            res.setMessage(messageConfig.MESSGAGE_LOGINFAILED);
+            return res;
+        }
+    }
 }

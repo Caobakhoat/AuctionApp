@@ -1,5 +1,6 @@
 package com.example.demo_web.service;
 
+import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Item;
 import com.example.demo_web.repository.ItemRepository;
 import com.example.demo_web.response.GetAllItemResponse;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 public class ItemServiceIpml implements ItemService{
     @Autowired
     ItemRepository itemRepository;
+    @Autowired
+    MessageConfig messageConfig;
     @Override
     public Item saveItem(Item item) {
         Item i= itemRepository.save(item);
@@ -25,8 +28,8 @@ public class ItemServiceIpml implements ItemService{
     public GetAllItemResponse getAllItem() {
         ArrayList<Item> list =(ArrayList<Item>) itemRepository.findAll();
         GetAllItemResponse res = new GetAllItemResponse();
-        res.setCode(1);
-        res.setMessage("get all item success");
+        res.setCode(messageConfig.CODE_SUCCESS);
+        res.setMessage(messageConfig.MESSAGE_GETALLITEM);
         res.setResult(list);
         return res;
     }

@@ -1,12 +1,14 @@
 package com.example.demo_web.controller;
 
 import com.example.demo_web.config.FileUploadUtil;
+import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Item;
 import com.example.demo_web.response.GetAllItemResponse;
 import com.example.demo_web.response.AddItemResponse;
 import com.example.demo_web.service.ItemServiceIpml;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -24,31 +26,32 @@ import java.net.URLConnection;
 public class ItemController {
     @Autowired
     ItemServiceIpml itemServiceIpml;
+    @Autowired
+    private final MessageConfig messageConfig;
     private static final String EXTERNAL_FILE_PATH = "/Users/bakhoat/Documents/demo_web/src/main/resources/static/item-photos/";
 
     @PostMapping(value = "/addItem")
-    public AddItemResponse addItem(@RequestParam("imageItem") MultipartFile multipartFile, @RequestParam String description, @RequestParam String name) throws IOException {
+    public ResponseEntity addItem(@RequestParam("imageItem") MultipartFile multipartFile, @RequestParam String description, @RequestParam String name) throws IOException {
         AddItemResponse res = new AddItemResponse();
         Item item = new Item();
         item.setDescription(description);
         item.setName(name);
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         item.setNameImage(fileName);
-
         Item saveItem = itemServiceIpml.saveItem(item);
-
         String uploadDir = "src/main/resources/static/item-photos/" + saveItem.getId();
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-        res.setCode(1);
-        res.setMessage("addItem success");
+        res.setCode(messageConfig.CODE_SUCCESS);
+        res.setMessage(messageConfig.MESSAGE_ADDITEM);
         res.setResult(saveItem);
-        return res;
+
+        return ResponseEntity.ok().body(res) ;
     }
     @GetMapping(value = "/getAllItem")
-    public GetAllItemResponse getAllItemResponse (){
+    public ResponseEntity getAllItemResponse (){
         GetAllItemResponse res = new GetAllItemResponse();
         res =itemServiceIpml.getAllItem();
-        return res;
+        return ResponseEntity.ok().body(res) ;
     }
 
 
