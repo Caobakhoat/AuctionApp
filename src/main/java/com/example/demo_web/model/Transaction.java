@@ -1,87 +1,41 @@
 package com.example.demo_web.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 
 @Entity
-@Table(name= "Transaction")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="transactions")
 public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "ID",nullable = false)
     private int id;
-
-    @Column(name = "paid")
+    @Column(name="paid",nullable = false)
     private int paid;
     @Column(name = "creatAt")
-    private int creatAt;
+    @CreationTimestamp
+    private LocalDateTime creatAt;
     @Column(name = "modifyAt")
-    private int modifyAt;
-    @ManyToOne
-    @JoinColumn(name = "idUser", nullable = false)
-    private User userTransaction;
+    @UpdateTimestamp
+    private LocalDateTime modifyAt;
     @ManyToOne
     @JoinColumn(name = "idAuction", nullable = false)
     private Auction auctionTransaction;
+    @ManyToOne
+    @JoinColumn(name = "idUser", nullable = false)
+    private User userTransaction;
 
-    public Transaction() {
-    }
-
-    public Transaction(int id, int paid, int creatAt, int modifyAt, User userTransaction, Auction auctionTransaction) {
-        this.id = id;
-        this.paid = paid;
-        this.creatAt = creatAt;
-        this.modifyAt = modifyAt;
-        this.userTransaction = userTransaction;
-        this.auctionTransaction = auctionTransaction;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getPaid() {
-        return paid;
-    }
-
-    public void setPaid(int paid) {
-        this.paid = paid;
-    }
-
-    public int getCreatAt() {
-        return creatAt;
-    }
-
-    public void setCreatAt(int creatAt) {
-        this.creatAt = creatAt;
-    }
-
-    public int getModifyAt() {
-        return modifyAt;
-    }
-
-    public void setModifyAt(int modifyAt) {
-        this.modifyAt = modifyAt;
-    }
-
-    public User getUserTransaction() {
-        return userTransaction;
-    }
-
-    public void setUserTransaction(User userTransaction) {
-        this.userTransaction = userTransaction;
-    }
-
-    public Auction getAuctionTransaction() {
-        return auctionTransaction;
-    }
-
-    public void setAuctionTransaction(Auction auctionTransaction) {
-        this.auctionTransaction = auctionTransaction;
-    }
 }

@@ -1,176 +1,98 @@
 package com.example.demo_web.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import static javax.persistence.FetchType.EAGER;
 
-@Entity
-@Table(name = "User")
-public class User implements Serializable {
+
+@Entity()
+@Table(name = "users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "username")
+    @Column(name = "username",nullable = false)
     private String username;
-    @Column(name = "password")
+    @Column(name = "password",nullable = false)
     private String password;
-    @Column(name = "address")
+    @Column(name = "address",nullable = false)
     private String address;
-    @Column(name = "name")
+    @Column(name = "name",nullable = false)
     private String name;
-    @Column(name = "email")
+    @Column(name = "email",nullable = false)
     private String email;
-    @Column(name = "dob")
+    @Column(name = "dob",nullable = false)
     private String dob;
-    @Column(name = "role")
+    @Column(name = "nameAvatar",nullable = false)
+    private String nameAvatar;
+    @Column(name = "role",nullable = false)
     private String role;
-    @Column(name = "balance")
+    @Column(name = "balance",nullable = false)
     private int balance;
     @Column(name = "creatAt")
-    private int creatAt;
+    @CreationTimestamp
+    private LocalDateTime creatAt;
     @Column(name = "modifyAt")
-    private int modifyAt;
+    @UpdateTimestamp
+    private LocalDateTime modifyAt;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userBids")
     private List<Bids> listBidUser;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userCreatAuction")
     private List<Auction> listAuctionCreated;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userTransaction")
-    private List<Transaction> listTransaction;
-
-    public User(int id, String username, String password, String address, String name, String email, String dob, String role, int balance, int creatAt, int modifyAt, List<Bids> listBidUser, List<Auction> listAuctionCreated, List<Transaction> listTransaction) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.address = address;
-        this.name = name;
-        this.email = email;
-        this.dob = dob;
-        this.role = role;
-        this.balance = balance;
-        this.creatAt = creatAt;
-        this.modifyAt = modifyAt;
-        this.listBidUser = listBidUser;
-        this.listAuctionCreated = listAuctionCreated;
-        this.listTransaction = listTransaction;
+    private List<Transaction> listTransactionUser;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+this.getRole()));
+        return authorities;
     }
 
-    public User() {
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public String getUsername() {
-        return username;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    @Transient
+    public String getPhotosImagePath() {
+        if (nameAvatar == null ) return null;
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public int getBalance() {
-        return balance;
-    }
-
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
-
-    public int getCreatAt() {
-        return creatAt;
-    }
-
-    public void setCreatAt(int creatAt) {
-        this.creatAt = creatAt;
-    }
-
-    public int getModifyAt() {
-        return modifyAt;
-    }
-
-    public void setModifyAt(int modifyAt) {
-        this.modifyAt = modifyAt;
-    }
-
-    public List<Bids> getListBidUser() {
-        return listBidUser;
-    }
-
-    public void setListBidUser(List<Bids> listBidUser) {
-        this.listBidUser = listBidUser;
-    }
-
-    public List<Auction> getListAuctionCreated() {
-        return listAuctionCreated;
-    }
-
-    public void setListAuctionCreated(List<Auction> listAuctionCreated) {
-        this.listAuctionCreated = listAuctionCreated;
-    }
-
-    public List<Transaction> getListTransaction() {
-        return listTransaction;
-    }
-
-    public void setListTransaction(List<Transaction> listTransaction) {
-        this.listTransaction = listTransaction;
+        return "http://localhost:8080/user/imageUser/" + id + "/" + nameAvatar;
     }
 }
