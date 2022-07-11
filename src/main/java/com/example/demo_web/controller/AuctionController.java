@@ -22,18 +22,9 @@ import java.util.Optional;
 public class AuctionController {
     @Autowired
     AuctionServiceIpml auctionServiceIpml;
-    private static final String EXTERNAL_FILE_PATH = "/Users/bakhoat/Documents/demo_web/src/main/resources/static/item-photos/";
-
-
     @GetMapping("/getAllAuction")
     public GetAllAuctionResponse getAllAuctionResponse(){
         GetAllAuctionResponse res = auctionServiceIpml.getAllAuction();
-        return res;
-    }
-
-    @GetMapping("/{id}")
-    public GetAuctionResponse getAuctionResponse(int id){
-        GetAuctionResponse res = auctionServiceIpml.getAuction(id);
         return res;
     }
 
@@ -53,7 +44,7 @@ public class AuctionController {
         return res;
     }
 
-    @DeleteMapping("id")
+    @DeleteMapping("/{id}")
     public DeleteAuctionResponse deleteAuction(@PathVariable("id") int id){
         DeleteAuctionResponse res = auctionServiceIpml.deleteAuction(id);
         return res;
