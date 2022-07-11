@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @Service
 @RequiredArgsConstructor
 
-public class ItemServiceIpml implements ItemService{
+public class ItemServiceImpl implements ItemService{
     @Autowired
     ItemRepository itemRepository;
     @Autowired

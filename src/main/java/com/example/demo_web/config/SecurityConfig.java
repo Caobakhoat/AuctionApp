@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.authorizeRequests()
                 // Swagger endpoints must be publicly accessible
                 .antMatchers("/item/imageItem/**").permitAll()
+                .antMatchers("/user/imageUser/**").permitAll()
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/user/register").permitAll()
                 .antMatchers("/admin/getAllUser").hasAuthority("ROLE_admin")
@@ -85,7 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/auction/getAllAuction").permitAll()
                 .antMatchers("/auction/addAuction").hasAuthority("ROLE_admin")
                 .antMatchers("/auction/updateAuction").hasAuthority("ROLE_admin")
-                .antMatchers("/bids/addBids").permitAll()
                 .anyRequest().authenticated();
 
         // Add JWT token filter

@@ -5,10 +5,8 @@ import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.User;
 import com.example.demo_web.repository.UserRepository;
 import com.example.demo_web.request.LoginRequest;
-import com.example.demo_web.request.RegisterRequest;
 import com.example.demo_web.response.GetAllUserResponse;
 import com.example.demo_web.response.LoginResponse;
-import com.example.demo_web.response.RegisterResponse;
 import com.example.demo_web.tokenAuthen.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,29 +75,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
     }
     @Override
-    public RegisterResponse registerUser(RegisterRequest req){
-        RegisterResponse res = new RegisterResponse();
-        User user =userRepository.findByUsername(req.getUsername());
+    public User registerUser(User u){
+        User user =userRepository.findByUsername(u.getUsername());
         if(user!=null){
-            res.setCode(messageConfig.CODE_FAILED);
-            res.setMessage(messageConfig.MESSGAGE_REGISTERFAILED);
-            res.setResult(false);
-            return res;
+            return null;
         }else{
-            User newuser = new User();
-            newuser.setAddress(req.getAddress());
-            newuser.setBalance(req.getBalance());
-            newuser.setDob(req.getDob());
-            newuser.setEmail(req.getEmail());
-            newuser.setPassword(passwordEncoder.encode(req.getPassword()));
-            newuser.setRole("GUEST");
-            newuser.setName(req.getName());
-            newuser.setUsername(req.getUsername());
-            userRepository.save(newuser);
-            res.setCode(messageConfig.CODE_SUCCESS);
-            res.setMessage(messageConfig.MESSGAGE_REGISTERSUCCESS);
-            res.setResult(true);
-            return res;
+            u.setPassword(passwordEncoder.encode(u.getPassword()));
+            u.setRole("GUEST");
+            return userRepository.save(u);
         }
     }
     @Override

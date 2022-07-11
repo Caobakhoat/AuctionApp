@@ -43,6 +43,8 @@ public class User implements UserDetails, Serializable {
     private String email;
     @Column(name = "dob",nullable = false)
     private String dob;
+    @Column(name = "nameAvatar",nullable = false)
+    private String nameAvatar;
     @Column(name = "role",nullable = false)
     private String role;
     @Column(name = "balance",nullable = false)
@@ -87,5 +89,10 @@ public class User implements UserDetails, Serializable {
         return true;
     }
 
+    @Transient
+    public String getPhotosImagePath() {
+        if (nameAvatar == null ) return null;
 
+        return "http://localhost:8080/user/imageUser/" + id + "/" + nameAvatar;
+    }
 }

@@ -5,7 +5,7 @@ import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Item;
 import com.example.demo_web.response.GetAllItemResponse;
 import com.example.demo_web.response.AddItemResponse;
-import com.example.demo_web.service.ItemServiceIpml;
+import com.example.demo_web.service.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import java.net.URLConnection;
 @RequestMapping("/item")
 public class ItemController {
     @Autowired
-    ItemServiceIpml itemServiceIpml;
+    ItemServiceImpl itemServiceIpml;
     @Autowired
     private final MessageConfig messageConfig;
     private static final String EXTERNAL_FILE_PATH = "/Users/bakhoat/Documents/demo_web/src/main/resources/static/item-photos/";
