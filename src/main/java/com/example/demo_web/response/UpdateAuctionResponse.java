@@ -5,11 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class BaseResponse {
-    protected int code;
-    protected String message;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UpdateAuctionResponse extends BaseResponse{
+    private Auction result;
 }

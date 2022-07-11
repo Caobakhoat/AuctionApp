@@ -1,5 +1,4 @@
 package com.example.demo_web.controller;
-
 import com.example.demo_web.model.ChatMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
