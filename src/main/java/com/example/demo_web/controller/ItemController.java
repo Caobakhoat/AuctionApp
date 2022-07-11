@@ -3,8 +3,10 @@ package com.example.demo_web.controller;
 import com.example.demo_web.config.FileUploadUtil;
 import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Item;
+import com.example.demo_web.response.DeleteItemResponse;
 import com.example.demo_web.response.GetAllItemResponse;
 import com.example.demo_web.response.AddItemResponse;
+import com.example.demo_web.response.UpdateItemResponse;
 import com.example.demo_web.service.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,22 +57,33 @@ public class ItemController {
     }
 
 
-        @RequestMapping("/imageItem/{id}/{fileName:.+}")
-        public void downloadPDFResource(HttpServletRequest request, HttpServletResponse response,
-                                        @PathVariable("fileName") String fileName, @PathVariable("id") String id) throws IOException {
-            File file = new File(EXTERNAL_FILE_PATH+id+"/" + fileName);
-            if (file.exists()) {
-                String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-                if (mimeType == null) {
-                    mimeType = "application/octet-stream";
-                }
-                response.setContentType(mimeType);
-                response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
-                response.setContentLength((int) file.length());
-                InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-                FileCopyUtils.copy(inputStream, response.getOutputStream());
-
+    @RequestMapping("/imageItem/{id}/{fileName:.+}")
+    public void downloadPDFResource(HttpServletRequest request, HttpServletResponse response,
+                                    @PathVariable("fileName") String fileName, @PathVariable("id") String id) throws IOException {
+        File file = new File(EXTERNAL_FILE_PATH+id+"/" + fileName);
+        if (file.exists()) {
+            String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+            if (mimeType == null) {
+                mimeType = "application/octet-stream";
             }
+            response.setContentType(mimeType);
+            response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+            response.setContentLength((int) file.length());
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+
         }
     }
+    @PutMapping("/{id}")
+    public UpdateItemResponse updateItem(@RequestBody Item newItem, @PathVariable("id") int id){
+        UpdateItemResponse res = itemServiceIpml.updateItem(newItem,id);
+        return res;
+    }
+
+    @DeleteMapping("/{id}")
+    public DeleteItemResponse deleteItem(@PathVariable("id") int id){
+        DeleteItemResponse res = itemServiceIpml.deleteItem(id);
+        return res;
+    }
+}
 
