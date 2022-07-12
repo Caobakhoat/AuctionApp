@@ -3,10 +3,13 @@ package com.example.demo_web.controller;
 
 import com.example.demo_web.config.FileUploadUtil;
 import com.example.demo_web.config.MessageConfig;
+import com.example.demo_web.model.Auction;
 import com.example.demo_web.model.User;
 import com.example.demo_web.request.LoginRequest;
+import com.example.demo_web.response.AddAuctionResponse;
 import com.example.demo_web.response.BaseResponse;
 import com.example.demo_web.response.RegisterResponse;
+import com.example.demo_web.response.SaveUserResponse;
 import com.example.demo_web.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,5 +95,11 @@ public class UserController {
         BaseResponse res = new BaseResponse();
         res= userService.getAllUser();
         return ResponseEntity.ok().body(res);
+    }
+
+    @PutMapping("/setAdmin")
+    public SaveUserResponse updateAuction(@RequestBody User newUser){
+        SaveUserResponse res = userService.saveUser(newUser);
+        return res;
     }
 }
