@@ -65,7 +65,6 @@ public class AuctionServiceIpml implements AuctionService{
         Auction updatedAuction = auctionRepository.findById(id).map(Auction -> {
             Auction.setTimeStart(newAuction.getTimeStart());
             Auction.setTimeEnd(newAuction.getTimeEnd());
-            //Auction.setCreate_at(foundAuction.getClass().);
             Auction.setInitPrice(newAuction.getInitPrice());
             Auction.setStatus(newAuction.getStatus());
             Auction.setModifyAt(LocalDateTime.now());
