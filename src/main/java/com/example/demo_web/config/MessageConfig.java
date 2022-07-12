@@ -9,6 +9,7 @@ public class MessageConfig {
     public final int CODE_FAILED =-1;
     public final String MESSGAGE_LOGINSUCCESS ="login success";
     public final String MESSGAGE_LOGINFAILED ="username or password incorrect";
+    public final String MESSGAGE_LOGINADMINFAILED ="u are not admin";
     public final int CODE_UNAUTHOR_ADMIN =-2;
     public final String MESSGAGE_REGISTERSUCCESS="register success";
     public final String MESSGAGE_REGISTERFAILED=" username already exist";
