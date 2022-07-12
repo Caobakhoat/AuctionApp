@@ -34,7 +34,7 @@ public class UserController {
     UserServiceImpl userService;
     @Autowired
     private final MessageConfig messageConfig;
-    private static final String EXTERNAL_FILE_PATH = "/Users/bakhoat/Documents/demo_web/src/main/resources/static/user-photos/";
+    private static final String EXTERNAL_FILE_PATH = "/src/main/resources/static/user-photos/";
 
     @PostMapping(value = "/login")
     public ResponseEntity checklogin(@RequestBody LoginRequest req){
