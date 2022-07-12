@@ -15,8 +15,8 @@ const mapState = (state: RootState) => ({
 type Props = {
     user: User | null;
 };
-const Home = ({user}: Props) => {
-    // console.log(user);
+const Home = ({ user }: Props) => {
+    console.log(user);
     const navigate = useNavigate();
     const toAdminPage = () => {
         navigate("/admin");
@@ -31,7 +31,7 @@ const Home = ({user}: Props) => {
                     className="logo ml-32 cursor-pointer"
                     onClick={() => toAdminPage()}
                 >
-                    <img src={home} width={40} height={40} alt="Home"/>
+                    <img src={home} width={40} height={40} alt="Home" />
                 </div>
                 <div className="search w-500 ml-200">
                     <Search
@@ -71,7 +71,7 @@ const Home = ({user}: Props) => {
                     <div className="text-center p-16">
                         <Card
                             hoverable
-                            cover={<img src={binhco} className="min-h-275" alt="Item"/>}
+                            cover={<img src={binhco} className="min-h-275" alt="Item" />}
                             className="border-radius-md "
                         >
                             <h3>Binh co 100 tuoi</h3>
@@ -82,7 +82,7 @@ const Home = ({user}: Props) => {
                     <div className="text-center p-16">
                         <Card
                             hoverable
-                            cover={<img src={bathuong} className="min-h-275" alt="Item"/>}
+                            cover={<img src={bathuong} className="min-h-275" alt="Item" />}
                             className="border-radius-md"
                         >
                             <h3>Bat huong co 100 tuoi</h3>
@@ -93,7 +93,7 @@ const Home = ({user}: Props) => {
                     <div className="text-center p-16">
                         <Card
                             hoverable
-                            cover={<img src={binhco} className="min-h-275" alt="Item"/>}
+                            cover={<img src={binhco} className="min-h-275" alt="Item" />}
                             className="border-radius-md "
                         >
                             <h3>Binh co 100 tuoi</h3>
@@ -104,7 +104,7 @@ const Home = ({user}: Props) => {
                     <div className="text-center p-16">
                         <Card
                             hoverable
-                            cover={<img src={bathuong} className="min-h-275" alt="Item"/>}
+                            cover={<img src={bathuong} className="min-h-275" alt="Item" />}
                             className="border-radius-md "
                         >
                             <h3>Binh co 100 tuoi</h3>
