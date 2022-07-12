@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,31 +24,36 @@ public class AuctionController {
     @Autowired
     AuctionServiceIpml auctionServiceIpml;
     @GetMapping("/getAllAuctions")
-    public GetAllAuctionResponse getAllAuctionResponse(){
+    public ResponseEntity getAllAuctionResponse(){
         GetAllAuctionResponse res = auctionServiceIpml.getAllAuction();
-        return res;
+        return ResponseEntity.ok().body(res);
     }
 
     @PostMapping("/addAuction")
-    public AddAuctionResponse addAuction(@RequestBody Auction newAuction){
+    public ResponseEntity addAuction(@RequestBody Auction newAuction){
         auctionServiceIpml.saveAuction(newAuction);
         AddAuctionResponse res = new AddAuctionResponse();
         res.setCode(1);
         res.setMessage("add Auction succeeded");
         res.setResult(newAuction);
-        return res;
+        return ResponseEntity.ok().body(res);
     }
 
     @PutMapping("/updateAuction")
-    public AddAuctionResponse updateAuction(@RequestBody Auction newAuction){
+    public ResponseEntity updateAuction(@RequestBody Auction newAuction){
         auctionServiceIpml.saveAuction(newAuction);
         AddAuctionResponse res = new AddAuctionResponse();
-        return res;
+        return ResponseEntity.ok().body(res);
     }
 
     @DeleteMapping("/{id}")
-    public DeleteAuctionResponse deleteAuction(@RequestBody Auction newAuction){
+    public ResponseEntity deleteAuction(@RequestBody Auction newAuction){
         DeleteAuctionResponse res = auctionServiceIpml.deleteAuction(newAuction);
-        return res;
+        return ResponseEntity.ok().body(res);
+    }
+    @GetMapping("/findAuctionByName")
+    public ResponseEntity findAuctionByName(@RequestParam String name){
+        ArrayList<Auction> res = auctionServiceIpml.findAutionbyName(name);
+        return ResponseEntity.ok().body(res);
     }
 }
