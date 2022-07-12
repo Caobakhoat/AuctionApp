@@ -22,7 +22,7 @@ import java.util.Optional;
 public class AuctionController {
     @Autowired
     AuctionServiceIpml auctionServiceIpml;
-    @GetMapping("/getAllAuction")
+    @GetMapping("/getAllAuctions")
     public GetAllAuctionResponse getAllAuctionResponse(){
         GetAllAuctionResponse res = auctionServiceIpml.getAllAuction();
         return res;

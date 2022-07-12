@@ -31,10 +31,5 @@ public class AdminController {
         }
         return ResponseEntity.ok().body(res);
     }
-    @GetMapping(value = "/getAllUser")
-    public  ResponseEntity getAllUser(){
-        BaseResponse res = new BaseResponse();
-        res= userService.getAllUser();
-        return ResponseEntity.ok().body(res);
-    }
+
 }
