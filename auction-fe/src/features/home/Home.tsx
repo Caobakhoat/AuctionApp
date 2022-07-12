@@ -1,15 +1,13 @@
 import React from "react";
-import {useNavigate} from "react-router-dom";
-import {Card, Col, Row} from "antd";
-// import {RootState} from "@/store";
-// import {User} from "@/model/user.model";
-import {connect} from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Card, Col, Row } from "antd";
+import { connect } from "react-redux";
 import Search from "antd/lib/input/Search";
 import home from "../../assets/img/home.png";
 import binhco from "../../assets/img/binhco100tuoi.jpeg";
 import bathuong from "../../assets/img/bathuongco.jpg";
-import {RootState} from "../../store";
-import {User} from "../../model/user.model";
+import { RootState } from "../../store";
+import { User } from "../../model/user.model";
 
 const mapState = (state: RootState) => ({
     user: state.auth.user,
