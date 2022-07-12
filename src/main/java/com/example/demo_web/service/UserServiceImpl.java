@@ -120,10 +120,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             String accessToken = jwtTokenUtil.generateAccessToken(user);
             user = userRepository.findByUsername(user.getUsername());
-
-            if(user.getRole()!="admin"){
+            System.out.println(user.getRole());
+            if(!user.getRole().equals("admin")){
                 res.setCode(messageConfig.CODE_UNAUTHOR_ADMIN);
-                res.setMessage(messageConfig.MESSGAGE_LOGINFAILED);
+                res.setMessage(messageConfig.MESSGAGE_LOGINADMINFAILED);
                 return res;
             }
             Map<String, Object> map = new HashMap<String, Object>();
