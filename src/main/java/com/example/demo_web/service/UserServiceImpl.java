@@ -150,4 +150,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         res.setResult(i);
         return res;
     }
+
+    @Override
+    public BaseResponse deleteUser(User u) {
+        BaseResponse res = new BaseResponse();
+        u.setIsDelete(1);
+        res.setCode(messageConfig.CODE_SUCCESS);
+        res.setMessage("Delete Auction "+u.getId()+" succeeded");
+        userRepository.save(u);
+        return res;
+    }
 }

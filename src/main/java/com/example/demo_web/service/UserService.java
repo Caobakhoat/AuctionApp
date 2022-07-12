@@ -12,4 +12,5 @@ public interface UserService  {
     BaseResponse getAllUser ();
     BaseResponse checkLoginAdmin(LoginRequest req);
     SaveUserResponse saveUser(User u);
+    BaseResponse deleteUser(User u);
 }

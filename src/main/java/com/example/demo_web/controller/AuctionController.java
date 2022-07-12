@@ -40,7 +40,8 @@ public class AuctionController {
 
     @PutMapping("/updateAuction")
     public AddAuctionResponse updateAuction(@RequestBody Auction newAuction){
-        AddAuctionResponse res = auctionServiceIpml.saveAuction(newAuction);
+        auctionServiceIpml.saveAuction(newAuction);
+        AddAuctionResponse res = new AddAuctionResponse();
         return res;
     }
 
