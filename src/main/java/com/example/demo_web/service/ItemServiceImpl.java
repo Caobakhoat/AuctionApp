@@ -29,6 +29,11 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public GetAllItemResponse getAllItem() {
         ArrayList<Item> list =(ArrayList<Item>) itemRepository.findAll();
+        for (Item item : list) {
+            if(item.getIsDelete()==1){
+                list.remove(item);
+            }
+        }
         GetAllItemResponse res = new GetAllItemResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_GETALLITEM);
@@ -47,12 +52,13 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public DeleteItemResponse deleteItem(Item item) {
-
         DeleteItemResponse res = new DeleteItemResponse();
-
-        itemRepository.delete(item);
+        item.setIsDelete(1);
+        updateItem(item);
         res.setCode(messageConfig.CODE_SUCCESS);
-        return null;
+        res.setMessage(messageConfig.MESSAGE_DELETEITEM);
+        res.setResult(true);
+        return res;
     }
 
 }
