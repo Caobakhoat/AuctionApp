@@ -1,11 +1,17 @@
 package com.example.demo_web.repository;
 
 import com.example.demo_web.model.Auction;
+import com.example.demo_web.model.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Integer> {
+    @Query(value = "select * from autions where name like %:name% ",nativeQuery = true)
+    ArrayList<Auction> searchAuction(@Param("name") String name);
 }

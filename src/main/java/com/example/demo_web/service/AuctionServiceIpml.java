@@ -65,5 +65,9 @@ public class AuctionServiceIpml implements AuctionService{
         return res;
     }
 
+    @Override
+    public ArrayList<Auction> findAutionbyName(String name) {
+        return auctionRepository.searchAuction(name);
+    }
 
 }
