@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeleteAuctionResponse extends BaseResponse{
-    private Auction result;
+    private int result;
 }

@@ -30,23 +30,23 @@ public class AuctionController {
 
     @PostMapping("/addAuction")
     public AddAuctionResponse addAuction(@RequestBody Auction newAuction){
-        Auction savedAuction = auctionServiceIpml.saveAuction(newAuction);
+        auctionServiceIpml.saveAuction(newAuction);
         AddAuctionResponse res = new AddAuctionResponse();
         res.setCode(1);
         res.setMessage("add Auction succeeded");
-        res.setResult(savedAuction);
+        res.setResult(newAuction);
         return res;
     }
 
-    @PutMapping("/{id}")
-    public UpdateAuctionResponse updateAuction(@RequestBody Auction newAuction, @PathVariable("id") int id){
-        UpdateAuctionResponse res = auctionServiceIpml.updateAuction(newAuction,id);
+    @PutMapping("/updateAuction")
+    public AddAuctionResponse updateAuction(@RequestBody Auction newAuction){
+        AddAuctionResponse res = auctionServiceIpml.saveAuction(newAuction);
         return res;
     }
 
     @DeleteMapping("/{id}")
-    public DeleteAuctionResponse deleteAuction(@PathVariable("id") int id){
-        DeleteAuctionResponse res = auctionServiceIpml.deleteAuction(id);
+    public DeleteAuctionResponse deleteAuction(@RequestBody Auction newAuction){
+        DeleteAuctionResponse res = auctionServiceIpml.deleteAuction(newAuction);
         return res;
     }
 }
