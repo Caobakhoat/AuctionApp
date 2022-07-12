@@ -26,36 +26,31 @@ public class AuctionController {
 
 
     @GetMapping("/getAllAuction")
-    public GetAllAuctionResponse getAllAuctionResponse(){
+    public ResponseEntity getAllAuctionResponse(){
         GetAllAuctionResponse res = auctionServiceIpml.getAllAuction();
-        return res;
+        return ResponseEntity.ok().body(res);
     }
 
-    @GetMapping("/{id}")
-    public GetAuctionResponse getAuctionResponse(int id){
-        GetAuctionResponse res = auctionServiceIpml.getAuction(id);
-        return res;
-    }
 
     @PostMapping("/addAuction")
-    public AddAuctionResponse addAuction(@RequestBody Auction newAuction){
+    public ResponseEntity addAuction(@RequestBody Auction newAuction){
         Auction savedAuction = auctionServiceIpml.saveAuction(newAuction);
         AddAuctionResponse res = new AddAuctionResponse();
         res.setCode(1);
         res.setMessage("add Auction succeeded");
         res.setResult(savedAuction);
-        return res;
+        return ResponseEntity.ok().body(res);
     }
 
     @PutMapping("/{id}")
-    public UpdateAuctionResponse updateAuction(@RequestBody Auction newAuction, @PathVariable("id") int id){
+    public ResponseEntity updateAuction(@RequestBody Auction newAuction, @PathVariable("id") int id){
         UpdateAuctionResponse res = auctionServiceIpml.updateAuction(newAuction,id);
-        return res;
+        return ResponseEntity.ok().body(res);
     }
 
     @DeleteMapping("id")
-    public DeleteAuctionResponse deleteAuction(@PathVariable("id") int id){
+    public ResponseEntity<DeleteAuctionResponse> deleteAuction(@PathVariable("id") int id){
         DeleteAuctionResponse res = auctionServiceIpml.deleteAuction(id);
-        return res;
+        return ResponseEntity.ok().body(res);
     }
 }
