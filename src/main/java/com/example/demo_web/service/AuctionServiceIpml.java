@@ -43,6 +43,9 @@ public class AuctionServiceIpml implements AuctionService{
     @Override
     public GetAllAuctionResponse getAllAuction() {
         ArrayList<Auction> list = (ArrayList<Auction>) auctionRepository.findAll();
+        for (Auction i:list){
+            if (i.getIsDelete()==1) list.remove(i);
+        }
         GetAllAuctionResponse res = new GetAllAuctionResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage("get all Auction success");
