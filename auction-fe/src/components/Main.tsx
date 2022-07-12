@@ -5,9 +5,9 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import Test from "../features/home/Test";
 import {User} from "../model/user.model";
 import Admin from "../features/admin/Admin";
-import UserManage from "../features/admin/UserManage";
-import ItemManage from "../features/admin/ItemManage";
-import AuctionManage from "../features/admin/AuctionManage";
+import UserManage from "../features/admin/user_manage/UserManage";
+import ItemManage from "../features/admin/item_manage/ItemManage";
+import AuctionManage from "../features/admin/auction_manage/AuctionManage";
 
 const mapState = (state: RootState) => ({
     user: state.auth.user,

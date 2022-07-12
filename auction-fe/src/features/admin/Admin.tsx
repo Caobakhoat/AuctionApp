@@ -2,9 +2,9 @@ import {DesktopOutlined, UnorderedListOutlined, UserOutlined,} from '@ant-design
 import type {MenuProps} from 'antd';
 import {Layout, Menu} from 'antd';
 import React, {useState} from 'react';
-import ItemManage from "./ItemManage";
-import AuctionManage from "./AuctionManage";
-import UserManage from "./UserManage";
+import ItemManage from "./item_manage/ItemManage";
+import AuctionManage from "./auction_manage/AuctionManage";
+import UserManage from "./user_manage/UserManage";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -54,7 +54,7 @@ const Admin: React.FC = () => {
                         {(menu==="user")&&<UserManage/>}
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                <Footer style={{ textAlign: 'center' }}>Copyright ©2022 CBK ft COI</Footer>
             </Layout>
         </Layout>
     );
