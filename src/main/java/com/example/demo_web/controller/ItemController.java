@@ -3,8 +3,10 @@ package com.example.demo_web.controller;
 import com.example.demo_web.config.FileUploadUtil;
 import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Item;
+import com.example.demo_web.response.DeleteItemResponse;
 import com.example.demo_web.response.GetAllItemResponse;
 import com.example.demo_web.response.AddItemResponse;
+import com.example.demo_web.response.UpdateItemResponse;
 import com.example.demo_web.service.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class ItemController {
         Item item = new Item();
         item.setDescription(description);
         item.setName(name);
+        item.setIsDelete(0);
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         item.setNameImage(fileName);
         Item saveItem = itemServiceIpml.saveItem(item);
@@ -44,16 +47,33 @@ public class ItemController {
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_ADDITEM);
         res.setResult(saveItem);
-
         return ResponseEntity.ok().body(res) ;
     }
     @GetMapping(value = "/getAllItem")
-    public ResponseEntity getAllItemResponse (){
+    public ResponseEntity getAllItem (){
         GetAllItemResponse res = new GetAllItemResponse();
         res =itemServiceIpml.getAllItem();
         return ResponseEntity.ok().body(res) ;
     }
-
+    @PutMapping(value = "/updateItem")
+    public ResponseEntity updateItem (@RequestParam("imageItem") MultipartFile multipartFile, @RequestParam String description, @RequestParam String name, @RequestParam int id)throws IOException{
+        UpdateItemResponse res = new UpdateItemResponse();
+        Item item = new Item();
+        item.setDescription(description);
+        item.setName(name);
+        item.setIsDelete(0);
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        item.setNameImage(fileName);
+        item.setId(id);
+        res=itemServiceIpml.updateItem(item);
+        return ResponseEntity.ok().body(res) ;
+    }
+    @DeleteMapping(value = "/deleteItem")
+    public ResponseEntity deleteItem (@RequestBody Item item){
+        DeleteItemResponse res = new DeleteItemResponse();
+        res =itemServiceIpml.deleteItem(item);
+        return ResponseEntity.ok().body(res) ;
+    }
 
         @RequestMapping("/imageItem/{id}/{fileName:.+}")
         public void downloadPDFResource(HttpServletRequest request, HttpServletResponse response,

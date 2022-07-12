@@ -32,6 +32,8 @@ public class Auction implements Serializable {
     private LocalDateTime timeStart;
     @Column(name = "timeEnd",nullable = false)
     private LocalDateTime timeEnd;
+    @Column(name = "isDelete",nullable = false)
+    private int isDelete;
     @Column(name = "creatAt")
     @CreationTimestamp
     private LocalDateTime creatAt;

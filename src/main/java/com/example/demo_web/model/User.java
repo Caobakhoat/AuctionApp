@@ -49,6 +49,8 @@ public class User implements UserDetails, Serializable {
     private String role;
     @Column(name = "balance",nullable = false)
     private int balance;
+    @Column(name = "isDelete",nullable = false)
+    private int isDelete;
     @Column(name = "creatAt")
     @CreationTimestamp
     private LocalDateTime creatAt;

@@ -5,12 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class BaseResponse {
-    protected int code;
-    protected String message;
-
+@NoArgsConstructor
+public class DeleteAuctionResponse extends BaseResponse{
+    private int result;
 }

@@ -2,6 +2,7 @@ package com.example.demo_web.service;
 
 import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Bids;
+import com.example.demo_web.repository.AuctionRepository;
 import com.example.demo_web.repository.BidsRepository;
 import com.example.demo_web.repository.UserRepository;
 import com.example.demo_web.request.AddBidsRequest;
@@ -18,8 +19,8 @@ public class BidsServiceImpl implements BidsService {
     BidsRepository bidsRepository;
     @Autowired
     UserRepository userRepository;
-//    @Autowired
-//    AuctionRepository auctionRepository;
+    @Autowired
+    AuctionRepository auctionRepository;
     private final JwtTokenUtil jwtTokenUtil;
     @Autowired
     MessageConfig messageConfig;
@@ -28,7 +29,7 @@ public class BidsServiceImpl implements BidsService {
         AddBidsResponse res= new AddBidsResponse();
         Bids bids = new Bids();
         bids.setBid_price(req.getBid_price());
-//        bids.setAuctionBids(auctionRepository.findById(req.getIdAuction()).get());
+        bids.setAuctionBids(auctionRepository.findById(req.getIdAuction()).get());
         String username = jwtTokenUtil.getUsername(req.getToken());
         bids.setUserBids( userRepository.findByUsername(username));
         res.setCode(messageConfig.CODE_SUCCESS);

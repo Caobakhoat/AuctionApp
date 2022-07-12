@@ -3,7 +3,9 @@ package com.example.demo_web.service;
 import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Item;
 import com.example.demo_web.repository.ItemRepository;
+import com.example.demo_web.response.DeleteItemResponse;
 import com.example.demo_web.response.GetAllItemResponse;
+import com.example.demo_web.response.UpdateItemResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,35 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public GetAllItemResponse getAllItem() {
         ArrayList<Item> list =(ArrayList<Item>) itemRepository.findAll();
+        for (Item item : list) {
+            if(item.getIsDelete()==1){
+                list.remove(item);
+            }
+        }
         GetAllItemResponse res = new GetAllItemResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_GETALLITEM);
         res.setResult(list);
+        return res;
+    }
+
+    @Override
+    public UpdateItemResponse updateItem(Item item) {
+        UpdateItemResponse res = new UpdateItemResponse();
+        res.setCode(messageConfig.CODE_SUCCESS);
+        res.setMessage(messageConfig.MESSAGE_UPDATEITEM);
+        res.setResult(itemRepository.save(item));
+        return res;
+    }
+
+    @Override
+    public DeleteItemResponse deleteItem(Item item) {
+        DeleteItemResponse res = new DeleteItemResponse();
+        item.setIsDelete(1);
+        updateItem(item);
+        res.setCode(messageConfig.CODE_SUCCESS);
+        res.setMessage(messageConfig.MESSAGE_DELETEITEM);
+        res.setResult(true);
         return res;
     }
 

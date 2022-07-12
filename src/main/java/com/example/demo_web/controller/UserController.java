@@ -87,4 +87,10 @@ public class UserController {
 
         }
     }
+    @GetMapping(value = "/getAllUsers")
+    public  ResponseEntity getAllUser(){
+        BaseResponse res = new BaseResponse();
+        res= userService.getAllUser();
+        return ResponseEntity.ok().body(res);
+    }
 }

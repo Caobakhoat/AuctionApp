@@ -16,5 +16,8 @@ public class MessageConfig {
     public final String MESSAGE_GETALLITEM="get all item success";
     public final String MESSAGE_ADDITEM="add item success";
     public final String MESSAGE_ADDBIDS="add bids success";
+    public final String MESSAGE_UPDATEITEM="update item success";
+    public final String MESSAGE_DELETEITEM="delete item success";
+
 
 }

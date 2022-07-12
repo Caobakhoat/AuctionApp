@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class BaseResponse {
-    protected int code;
-    protected String message;
-
+@NoArgsConstructor
+public class UpdateAuctionResponse extends BaseResponse{
+    private Auction result;
 }

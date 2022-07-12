@@ -29,6 +29,8 @@ public class Item implements Serializable {
     private String description;
     @Column(name = "nameImage",nullable = false)
     private String nameImage;
+    @Column(name = "isDelete",nullable = false)
+    private int isDelete;
     @Column(name = "creatAt")
     @CreationTimestamp
     private LocalDateTime creatAt;

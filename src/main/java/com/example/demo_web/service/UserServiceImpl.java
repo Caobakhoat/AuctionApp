@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return null;
         }else{
             u.setPassword(passwordEncoder.encode(u.getPassword()));
-            u.setRole("GUEST");
+            u.setRole("guest");
             return userRepository.save(u);
         }
     }
