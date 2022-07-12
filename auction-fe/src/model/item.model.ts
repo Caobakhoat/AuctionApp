@@ -2,5 +2,6 @@ export interface Item {
     id: number;
     name: string;
     description:string;
-    imageItem:string;
+    nameImage:string;
+    photosImagePath:string;
 }
