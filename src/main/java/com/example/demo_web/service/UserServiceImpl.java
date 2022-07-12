@@ -2,11 +2,11 @@ package com.example.demo_web.service;
 
 
 import com.example.demo_web.config.MessageConfig;
+import com.example.demo_web.model.Auction;
 import com.example.demo_web.model.User;
 import com.example.demo_web.repository.UserRepository;
 import com.example.demo_web.request.LoginRequest;
-import com.example.demo_web.response.GetAllUserResponse;
-import com.example.demo_web.response.LoginResponse;
+import com.example.demo_web.response.*;
 import com.example.demo_web.tokenAuthen.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +88,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public GetAllUserResponse getAllUser (){
         ArrayList<User> list = (ArrayList<User>) userRepository.findAll();
+        for (User i:list){
+            if (i.getIsDelete()==1) list.remove(i);
+        }
         GetAllUserResponse res = new GetAllUserResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSGAGE_GETALLUSER);
@@ -136,5 +139,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             res.setMessage(messageConfig.MESSGAGE_LOGINFAILED);
             return res;
         }
+    }
+
+    @Override
+    public SaveUserResponse saveUser(User u) {
+        User i= userRepository.save(u);
+        SaveUserResponse res = new SaveUserResponse();
+        res.setCode(messageConfig.CODE_SUCCESS);
+        res.setMessage("Saved");
+        res.setResult(i);
+        return res;
+    }
+
+    @Override
+    public BaseResponse deleteUser(User u) {
+        BaseResponse res = new BaseResponse();
+        u.setIsDelete(1);
+        res.setCode(messageConfig.CODE_SUCCESS);
+        res.setMessage("Delete Auction "+u.getId()+" succeeded");
+        userRepository.save(u);
+        return res;
     }
 }
