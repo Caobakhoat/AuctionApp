@@ -31,7 +31,7 @@ public class ItemController {
     ItemServiceImpl itemServiceIpml;
     @Autowired
     private final MessageConfig messageConfig;
-    private static final String EXTERNAL_FILE_PATH = "/Users/bakhoat/Documents/demo_web/src/main/resources/static/item-photos/";
+    private static final String EXTERNAL_FILE_PATH = "src/main/resources/static/item-photos/";
 
     @PostMapping(value = "/addItem")
     public ResponseEntity addItem(@RequestParam("imageItem") MultipartFile multipartFile, @RequestParam String description, @RequestParam String name) throws IOException {
