@@ -1,8 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Col, Row } from "antd";
-// import { RootState } from "@/store";
-// import { User } from "@/model/user.model";
 import { connect } from "react-redux";
 import Search from "antd/lib/input/Search";
 import home from "../../assets/img/home.png";
