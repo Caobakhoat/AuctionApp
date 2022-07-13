@@ -3,13 +3,11 @@ package com.example.demo_web.controller;
 
 import com.example.demo_web.config.FileUploadUtil;
 import com.example.demo_web.config.MessageConfig;
-import com.example.demo_web.model.Auction;
 import com.example.demo_web.model.User;
 import com.example.demo_web.request.LoginRequest;
-import com.example.demo_web.response.AddAuctionResponse;
 import com.example.demo_web.response.BaseResponse;
 import com.example.demo_web.response.RegisterResponse;
-import com.example.demo_web.response.SaveUserResponse;
+import com.example.demo_web.response.SetAdminResponse;
 import com.example.demo_web.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,7 @@ public class UserController {
     UserServiceImpl userService;
     @Autowired
     private final MessageConfig messageConfig;
-    private static final String EXTERNAL_FILE_PATH = "/Users/bakhoat/Documents/demo_web/src/main/resources/static/user-photos/";
+    private static final String EXTERNAL_FILE_PATH = "src/main/resources/static/user-photos/";
 
     @PostMapping(value = "/login")
     public ResponseEntity checklogin(@RequestBody LoginRequest req){
@@ -65,7 +63,7 @@ public class UserController {
             res.setResult(false);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(res);
         }else{
-            String uploadDir = "src/main/resources/static/user-photos/" + saveuser.getId();
+            String uploadDir = EXTERNAL_FILE_PATH + saveuser.getId();
             FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
             res.setCode(messageConfig.CODE_SUCCESS);
             res.setMessage(messageConfig.MESSGAGE_REGISTERSUCCESS);
@@ -98,8 +96,8 @@ public class UserController {
     }
 
     @PutMapping("/setAdmin")
-    public SaveUserResponse updateAuction(@RequestBody User newUser){
-        SaveUserResponse res = userService.saveUser(newUser);
-        return res;
+    public ResponseEntity setAdmin(@RequestBody User newUser){
+        SetAdminResponse res = userService.setAdmin(newUser);
+        return ResponseEntity.ok().body(res);
     }
 }

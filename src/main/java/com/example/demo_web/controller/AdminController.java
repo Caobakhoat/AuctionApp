@@ -27,7 +27,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
         }
         if(res.getCode()==messageConfig.CODE_UNAUTHOR_ADMIN){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(res);
         }
         return ResponseEntity.ok().body(res);
     }

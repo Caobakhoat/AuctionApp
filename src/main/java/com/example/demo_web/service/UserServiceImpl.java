@@ -2,7 +2,6 @@ package com.example.demo_web.service;
 
 
 import com.example.demo_web.config.MessageConfig;
-import com.example.demo_web.model.Auction;
 import com.example.demo_web.model.User;
 import com.example.demo_web.repository.UserRepository;
 import com.example.demo_web.request.LoginRequest;
@@ -75,26 +74,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
     }
     @Override
-    public User registerUser(User u){
-        User user =userRepository.findByUsername(u.getUsername());
-        if(user!=null){
+    public User registerUser(User user){
+        User newuser =userRepository.findByUsername(user.getUsername());
+        if(newuser!=null){
             return null;
         }else{
-            u.setPassword(passwordEncoder.encode(u.getPassword()));
-            u.setRole("guest");
-            return userRepository.save(u);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRole("guest");
+            return userRepository.save(user);
         }
     }
     @Override
     public GetAllUserResponse getAllUser (){
-        ArrayList<User> list = (ArrayList<User>) userRepository.findAll();
-        for (User i:list){
-            if (i.getIsDelete()==1) list.remove(i);
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
+        for (User user:listUser){
+            if (user.getIsDelete()==1) listUser.remove(user);
         }
         GetAllUserResponse res = new GetAllUserResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSGAGE_GETALLUSER);
-        res.setResult(list);
+        res.setResult(listUser);
         return res;
     }
 
@@ -120,13 +119,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             String accessToken = jwtTokenUtil.generateAccessToken(user);
             user = userRepository.findByUsername(user.getUsername());
-            System.out.println(user.getRole());
             if(!user.getRole().equals("admin")){
                 res.setCode(messageConfig.CODE_UNAUTHOR_ADMIN);
                 res.setMessage(messageConfig.MESSGAGE_LOGINADMINFAILED);
                 return res;
             }
             Map<String, Object> map = new HashMap<String, Object>();
+            user.setPassword("");
             map.put("token", accessToken);
             map.put("user", user);
             res.setResult(map);
@@ -142,22 +141,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public SaveUserResponse saveUser(User u) {
-        User i= userRepository.save(u);
-        SaveUserResponse res = new SaveUserResponse();
+    public SetAdminResponse setAdmin(User u) {
+        SetAdminResponse res = new SetAdminResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
-        res.setMessage("Saved");
-        res.setResult(i);
+        res.setMessage(messageConfig.MESSAGE_SETROLE);
+        res.setResult(userRepository.save(u));
         return res;
     }
 
-    @Override
-    public BaseResponse deleteUser(User u) {
-        BaseResponse res = new BaseResponse();
-        u.setIsDelete(1);
-        res.setCode(messageConfig.CODE_SUCCESS);
-        res.setMessage("Delete Auction "+u.getId()+" succeeded");
-        userRepository.save(u);
-        return res;
-    }
 }

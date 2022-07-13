@@ -22,22 +22,21 @@ public class ItemServiceImpl implements ItemService{
     MessageConfig messageConfig;
     @Override
     public Item saveItem(Item item) {
-        Item i= itemRepository.save(item);
-        return i;
+        return itemRepository.save(item);
     }
 
     @Override
     public GetAllItemResponse getAllItem() {
-        ArrayList<Item> list =(ArrayList<Item>) itemRepository.findAll();
-        for (Item item : list) {
+        ArrayList<Item> listItem =(ArrayList<Item>) itemRepository.findAll();
+        for (Item item : listItem) {
             if(item.getIsDelete()==1){
-                list.remove(item);
+                listItem.remove(item);
             }
         }
         GetAllItemResponse res = new GetAllItemResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_GETALLITEM);
-        res.setResult(list);
+        res.setResult(listItem);
         return res;
     }
 

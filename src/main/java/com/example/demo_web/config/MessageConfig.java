@@ -19,6 +19,8 @@ public class MessageConfig {
     public final String MESSAGE_ADDBIDS="add bids success";
     public final String MESSAGE_UPDATEITEM="update item success";
     public final String MESSAGE_DELETEITEM="delete item success";
+    public final String MESSAGE_SETROLE="set role success";
+    public final String MESSAGE_DELETEUSER="delete item success";
 
 
 }
