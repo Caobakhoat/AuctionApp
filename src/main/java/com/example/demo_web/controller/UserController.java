@@ -100,4 +100,5 @@ public class UserController {
         SetAdminResponse res = userService.setAdmin(newUser);
         return ResponseEntity.ok().body(res);
     }
+
 }

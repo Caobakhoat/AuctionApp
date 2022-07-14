@@ -87,9 +87,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public GetAllUserResponse getAllUser (){
         ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
-        for (User user:listUser){
-            if (user.getIsDelete()==1) listUser.remove(user);
-        }
         GetAllUserResponse res = new GetAllUserResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSGAGE_GETALLUSER);
@@ -120,12 +117,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             String accessToken = jwtTokenUtil.generateAccessToken(user);
             user = userRepository.findByUsername(user.getUsername());
             if(!user.getRole().equals("admin")){
+                System.out.println("here");
                 res.setCode(messageConfig.CODE_UNAUTHOR_ADMIN);
                 res.setMessage(messageConfig.MESSGAGE_LOGINADMINFAILED);
                 return res;
             }
             Map<String, Object> map = new HashMap<String, Object>();
-            user.setPassword("");
             map.put("token", accessToken);
             map.put("user", user);
             res.setResult(map);
