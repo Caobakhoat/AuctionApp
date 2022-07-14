@@ -54,7 +54,7 @@ const Admin: React.FC = () => {
                         {(menu==="user")&&<UserManage/>}
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Copyright ©2022 CBK ft COI</Footer>
+                <Footer style={{ textAlign: 'center' }}>Copyright ©2022 AE PTIT</Footer>
             </Layout>
         </Layout>
     );

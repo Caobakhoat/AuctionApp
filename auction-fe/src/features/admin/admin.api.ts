@@ -1,9 +1,16 @@
-import {BaseResponse, User} from "../../model/user.model";
+import {BaseResponse, LoginResponse, User} from "../../model/user.model";
 import {appApi} from "../../api";
 import {Item} from "../../model/item.model";
 
 export const adminApi=appApi.injectEndpoints({
     endpoints: (builder) => ({
+        adminLogin: builder.mutation<BaseResponse<LoginResponse>, {username:string,password:string}>({
+            query: (credentials) => ({
+                url: 'admin/login',
+                method: 'POST',
+                body: credentials,
+            }),
+        }),
         getAllUsers: builder.query<BaseResponse<User[]>, void>({
             query: () => ({
                 url: 'user/getAllUsers'
@@ -23,4 +30,4 @@ export const adminApi=appApi.injectEndpoints({
         })
     }),
 })
-export const {useGetAllUsersQuery,useGetAllItemsQuery,useAddItemMutation} = adminApi;
+export const {useAdminLoginMutation,useGetAllUsersQuery,useGetAllItemsQuery,useAddItemMutation} = adminApi;
