@@ -43,7 +43,7 @@ public class ItemController {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         item.setNameImage(fileName);
         Item saveItem = itemServiceIpml.saveItem(item);
-        String uploadDir = "src/main/resources/static/item-photos/" + saveItem.getId();
+        String uploadDir = EXTERNAL_FILE_PATH + saveItem.getId();
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_ADDITEM);
