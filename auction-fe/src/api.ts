@@ -16,5 +16,6 @@ export const appApi = createApi({
         },
         credentials: 'include',
     }),
+    tagTypes: ['Item'],
     endpoints: () => ({}),
 });

@@ -9,7 +9,6 @@ import AdminLogin from "./features/admin/AdminLogin";
 import {connect} from "react-redux";
 import {RootState} from "./store";
 import {User} from "./model/user.model";
-import Test from "./features/home/Test";
 import Admin from "./features/admin/Admin";
 import UserManage from "./features/admin/user_manage/UserManage";
 import ItemManage from "./features/admin/item_manage/ItemManage";
@@ -40,13 +39,11 @@ const App = ({user}:Props) =>{
         <BrowserRouter>
             <Routes>
                 <Route index element={<Home/>}/>
-                <Route path="/" element={<Home/>}/>
                 <Route path="/admin/login" element={<AdminLogin/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route element={<UserRoute user={user}/>}>
                     <Route path="/home" element={<Home />} />
-                    <Route path="/test" element={<Test />} />
                 </Route>
                 <Route path="/admin" element={<AdminRoute user={user}/>}>
                     <Route path="/admin/home" element={<Admin/>}/>
@@ -54,7 +51,7 @@ const App = ({user}:Props) =>{
                     <Route path="/admin/item-manage" element={<ItemManage/>}/>
                     <Route path="/admin/auction-manage" element={<AuctionManage/>}/>
                 </Route>
-                <Route path="*" element={<p>There's nothing here: 404!</p>}/>
+                <Route path="*" element={<Home/>}/>
             </Routes>
         </BrowserRouter>
     );

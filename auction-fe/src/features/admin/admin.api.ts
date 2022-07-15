@@ -2,9 +2,9 @@ import {BaseResponse, LoginResponse, User} from "../../model/user.model";
 import {appApi} from "../../api";
 import {Item} from "../../model/item.model";
 
-export const adminApi=appApi.injectEndpoints({
+export const adminApi = appApi.injectEndpoints({
     endpoints: (builder) => ({
-        adminLogin: builder.mutation<BaseResponse<LoginResponse>, {username:string,password:string}>({
+        adminLogin: builder.mutation<BaseResponse<LoginResponse>, { username: string, password: string }>({
             query: (credentials) => ({
                 url: 'admin/login',
                 method: 'POST',
@@ -16,18 +16,26 @@ export const adminApi=appApi.injectEndpoints({
                 url: 'user/getAllUsers'
             }),
         }),
-        getAllItems:builder.query<BaseResponse<Item[]>,void>({
-            query:()=>({
-                url:'item/getAllItems'
-            })
+        getAllItems: builder.query<BaseResponse<Item[]>, void>({
+            query: () => ({
+                url: 'item/getAllItems'
+            }),
+            providesTags: ['Item'],
         }),
-        addItem:builder.mutation<BaseResponse<Item>, { name:string,description:string,imageItem:string }>({
-            query:(arg)=>({
-                url:'item/addItem',
-                method: "POST",
-                body: arg,
-            })
+        addItem: builder.mutation<BaseResponse<Item>, { name: string, description: string, imageItem: File }>({
+            query(data) {
+                const formData = new FormData();
+                formData.append("name", data.name);
+                formData.append("description", data.description);
+                formData.append("imageItem", data.imageItem);
+                return {
+                    url: 'item/addItem',
+                    method: "POST",
+                    body: formData
+                }
+            },
+            invalidatesTags: ['Item'],
         })
     }),
 })
-export const {useAdminLoginMutation,useGetAllUsersQuery,useGetAllItemsQuery,useAddItemMutation} = adminApi;
+export const {useAdminLoginMutation, useGetAllUsersQuery, useGetAllItemsQuery, useAddItemMutation} = adminApi;

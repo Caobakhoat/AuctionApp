@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useGetAllItemsQuery} from "../admin.api";
+import {useAddItemMutation, useGetAllItemsQuery} from "../admin.api";
 import Table, {ColumnsType} from "antd/lib/table";
 import {Button, Form, Input, Modal, Space, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
@@ -39,23 +39,29 @@ const columns: ColumnsType<Item> = [
 const ItemManage = () => {
     const [isShowAddItemModal,setIsShowAddItemModal]=useState(false);
     const {data,isLoading}=useGetAllItemsQuery();
+    const [addItem]=useAddItemMutation();
+    const [form] = Form.useForm();
     return (
         <>
             <div className="fw-700 fs-50 mb-32">Item Manage</div>
             <div className="mt-20 mb-20">
                 <Button className="bg-green-100 text-white border-radius-sm" onClick={()=>setIsShowAddItemModal(true)}>Add</Button>
             </div>
-            <Modal title="Add Item" visible={isShowAddItemModal} onOk={()=>setIsShowAddItemModal(false)} onCancel={()=>setIsShowAddItemModal(false)}>
+            <Modal title="Add Item" visible={isShowAddItemModal} footer={null} onCancel={()=>setIsShowAddItemModal(false)}>
                 <Form
+                    form={form}
                     name="basic"
-                    labelCol={{ span: 8 }}
+                    labelCol={{ offset:1,span: 5 }}
                     wrapperCol={{ span: 16 }}
-                    initialValues={{ remember: true }}
-                    onFinish={(values)=>{
-                        console.log(values);
-                    }}
-                    // onFinishFailed={onFinishFailed}
+                    requiredMark={false}
                     autoComplete="off"
+                    onFinish={async (values)=>{
+                        const imageItem=values.imageItem.file.originFileObj;
+                        const item={...values,imageItem};
+                        await addItem(item).unwrap();
+                        form.resetFields();
+                        setIsShowAddItemModal(false);
+                    }}
                 >
                     <Form.Item
                         label="Name"
@@ -71,21 +77,28 @@ const ItemManage = () => {
                     >
                         <Input />
                     </Form.Item>
-                    <Upload
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                        listType="picture"
-                        maxCount={1}
+                    <Form.Item
+                        name="imageItem"
+                        label="Image Item"
+                        valuePropName="formList"
                     >
-                        <Button icon={<UploadOutlined />}>Image Item</Button>
-                    </Upload>
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                        <Upload
+                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                            listType="picture"
+                            maxCount={1}
+                        >
+                            <Button icon={<UploadOutlined />}>Image Item</Button>
+                        </Upload>
+                    </Form.Item>
+
+                    <Form.Item wrapperCol={{span: 24 }} className="text-center">
                         <Button type="primary" htmlType="submit">
                             Submit
                         </Button>
                     </Form.Item>
                 </Form>
             </Modal>
-            <Table columns={columns} dataSource={data?.result}/>
+            <Table columns={columns} dataSource={data?.result.map((el, idx) => ({key: idx, ...el}))}/>
         </>
     )
 }
