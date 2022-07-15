@@ -1,6 +1,6 @@
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import React, {useState} from "react";
-import {Link, Navigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {Button, Form, Input, Row} from "antd";
 import {connect} from "react-redux";
 import {RootState} from "../../store";
@@ -81,19 +81,6 @@ const AdminLogin = ({user}: Props) => {
                                 Login
                             </Button>
                         </Form.Item>
-                        <Row justify="center" align="middle">
-                            <div>
-                              <span className="fs-14 lh-20 text-gray-100 fw-500">
-                                Do you have an account?
-                              </span>
-                                <Link
-                                    to="/register"
-                                    className="fs-14 lh-20 text-blue-100 fw-400 text-decoration-underline"
-                                >
-                                    Register new account
-                                </Link>
-                            </div>
-                        </Row>
                     </Form>
                 </div>
             </Row>

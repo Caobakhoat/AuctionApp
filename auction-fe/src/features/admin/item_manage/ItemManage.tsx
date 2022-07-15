@@ -7,6 +7,11 @@ import {Item} from "../../../model/item.model";
 
 const columns: ColumnsType<Item> = [
     {
+        title: 'Id',
+        dataIndex: 'id',
+        key: 'id',
+    },
+    {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
@@ -26,7 +31,6 @@ const columns: ColumnsType<Item> = [
     },
     {
         title: 'Action',
-        // dataIndex: 'role',
         key: 'action',
         render: (_, record) => (
             <Space size="middle">

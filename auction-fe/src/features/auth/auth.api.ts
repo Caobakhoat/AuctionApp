@@ -10,12 +10,23 @@ export const authApi = appApi.injectEndpoints({
                 body: credentials,
             }),
         }),
-        register: builder.mutation<boolean, { username: string, password: string, name: string, address: string, email: string, dob: string, balance: number }>({
-            query: (arg) => ({
-                url: 'user/register',
-                method: "POST",
-                body: arg,
-            }),
+        register: builder.mutation<boolean, { username: string, password: string, name: string, address: string, email: string, dob: string, balance: number,imageUser:File }>({
+            query (data) {
+                const formData=new FormData();
+                formData.append("username",data.username);
+                formData.append("password",data.password);
+                formData.append("name",data.name);
+                formData.append("address",data.address);
+                formData.append("email",data.email);
+                formData.append("dob",data.dob);
+                formData.append("balance",data.balance.toString());
+                formData.append("imageUser",data.imageUser);
+                return {
+                    url: 'user/register',
+                    method: "POST",
+                    body: formData,
+                }
+            },
         })
     }),
 })

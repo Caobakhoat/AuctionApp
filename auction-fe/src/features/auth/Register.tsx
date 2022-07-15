@@ -1,7 +1,7 @@
-import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons";
+import {LockOutlined, MailOutlined, UploadOutlined, UserOutlined} from "@ant-design/icons";
 import React, {useState} from "react";
 import {Link, Navigate, useNavigate} from "react-router-dom";
-import {Button, DatePicker, Form, Input, Row} from "antd";
+import {Button, DatePicker, Form, Input, Row, Upload} from "antd";
 import {useRegisterMutation} from "./auth.api";
 import {connect} from "react-redux";
 import {RootState} from "../../store";
@@ -41,7 +41,8 @@ const Register = ({user}: Props) => {
                         onFinish={async (values) => {
                             try {
                                 const dob=values.dob._i;
-                                const userRegister={...values,dob};
+                                const imageUser=values.imageUser.file.originFileObj;
+                                const userRegister={...values,dob,imageUser};
                                 await register(userRegister).unwrap();
                                 navigate("/login");
                             } catch (error) {
@@ -128,6 +129,19 @@ const Register = ({user}: Props) => {
                                 prefix={<UserOutlined className="site-form-item-icon"/>}
                                 placeholder="balance"
                             />
+                        </Form.Item>
+                        <Form.Item
+                            name="imageUser"
+                            label="Avatar User"
+                            valuePropName="formList"
+                        >
+                            <Upload
+                                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                listType="picture"
+                                maxCount={1}
+                            >
+                                <Button icon={<UploadOutlined />}>Avatar User</Button>
+                            </Upload>
                         </Form.Item>
                         <Form.Item className="text-center">
                             <Button
