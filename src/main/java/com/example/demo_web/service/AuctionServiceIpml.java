@@ -28,15 +28,15 @@ import java.util.Optional;
 public class AuctionServiceIpml implements AuctionService{
     @Autowired
     AuctionRepository auctionRepository;
+    @Autowired
     MessageConfig messageConfig;
 
     @Override
     public AddAuctionResponse saveAuction(Auction auction) {
-        Auction i= auctionRepository.save(auction);
         AddAuctionResponse res = new AddAuctionResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
-        res.setMessage("get all Auction success");
-        res.setResult(i);
+        res.setMessage(messageConfig.MESSAGE_ADDAUCTION);
+        res.setResult( auctionRepository.save(auction));
         return res;
     }
 
@@ -48,25 +48,33 @@ public class AuctionServiceIpml implements AuctionService{
         }
         GetAllAuctionResponse res = new GetAllAuctionResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
-        res.setMessage("get all Auction success");
+        res.setMessage(messageConfig.MESSAGE_GETALLAUCTION);
         res.setResult(list);
         return res;
     }
 
 
     @Override
-    public DeleteAuctionResponse deleteAuction(Auction newAuction){
+    public DeleteAuctionResponse deleteAuction(Auction auction){
         DeleteAuctionResponse res = new DeleteAuctionResponse();
-        newAuction.setIsDelete(1);
         res.setCode(messageConfig.CODE_SUCCESS);
-        res.setMessage("Delete Auction "+newAuction.getId()+" succeeded");
+        res.setMessage(messageConfig.MESSAGE_DELETEAUCTION);
         res.setResult(1);
-        auctionRepository.save(newAuction);
+        auctionRepository.save(auction);
         return res;
     }
 
     @Override
-    public ArrayList<Auction> findAutionbyName(String name) {
+    public UpdateAuctionResponse updateAuction(Auction auction) {
+        UpdateAuctionResponse res = new UpdateAuctionResponse();
+        res.setCode(messageConfig.CODE_SUCCESS);
+        res.setMessage(messageConfig.MESSAGE_UPDATEAUCTION);
+        res.setResult(auctionRepository.save(auction));
+        return res;
+    }
+
+    @Override
+    public ArrayList<Auction> findAuctionbyName(String name) {
         return auctionRepository.searchAuction(name);
     }
 

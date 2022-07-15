@@ -117,7 +117,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             String accessToken = jwtTokenUtil.generateAccessToken(user);
             user = userRepository.findByUsername(user.getUsername());
             if(!user.getRole().equals("admin")){
-                System.out.println("here");
                 res.setCode(messageConfig.CODE_UNAUTHOR_ADMIN);
                 res.setMessage(messageConfig.MESSGAGE_LOGINADMINFAILED);
                 return res;
