@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     );
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             String accessToken = jwtTokenUtil.generateAccessToken(user);
-            user=userRepository.findByUsername(user.getUsername());
+            user =userRepository.findByUsername(user.getUsername());
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("token",accessToken);
             map.put("user", user);
@@ -65,9 +65,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             res.setCode(messageConfig.CODE_SUCCESS);
             res.setMessage(messageConfig.MESSGAGE_LOGINSUCCESS);
             return res;
-
         }
-        catch (BadCredentialsException ex) {
+        catch (Exception ex) {
             res.setCode(messageConfig.CODE_FAILED);
             res.setMessage(messageConfig.MESSGAGE_LOGINFAILED);
             return res;
@@ -128,8 +127,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             res.setCode(messageConfig.CODE_SUCCESS);
             res.setMessage(messageConfig.MESSGAGE_LOGINSUCCESS);
             return res;
-
-        } catch (BadCredentialsException ex) {
+        } catch (Exception ex) {
             res.setCode(messageConfig.CODE_FAILED);
             res.setMessage(messageConfig.MESSGAGE_LOGINFAILED);
             return res;
