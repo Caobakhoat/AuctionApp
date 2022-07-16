@@ -11,4 +11,5 @@ import java.util.ArrayList;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
+    Item findItemById(int id);
 }

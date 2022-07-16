@@ -3,6 +3,7 @@ package com.example.demo_web.controller;
 import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Auction;
 import com.example.demo_web.repository.AuctionRepository;
+import com.example.demo_web.request.AddAuctionRequest;
 import com.example.demo_web.response.*;
 import com.example.demo_web.service.AuctionServiceIpml;
 
@@ -31,8 +32,8 @@ public class AuctionController {
     }
 
     @PostMapping("/addAuction")
-    public ResponseEntity addAuction(@RequestBody Auction auction){
-        AddAuctionResponse res= auctionServiceIpml.saveAuction(auction);
+    public ResponseEntity addAuction(@RequestBody AddAuctionRequest req) {
+        AddAuctionResponse res= auctionServiceIpml.addAuction(req);
         return ResponseEntity.ok().body(res);
     }
 

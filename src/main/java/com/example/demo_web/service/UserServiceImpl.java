@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +28,7 @@ import java.util.*;
 @Transactional
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService,UserDetailsService {
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -57,6 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     );
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             String accessToken = jwtTokenUtil.generateAccessToken(user);
+            System.out.println(accessToken);
             user =userRepository.findByUsername(user.getUsername());
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("token",accessToken);
@@ -94,10 +94,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      return userRepository.findByUsername(username);
-    }
 
     @Override
     public LoginResponse checkLoginAdmin(LoginRequest req) {
@@ -141,6 +137,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         res.setMessage(messageConfig.MESSAGE_SETROLE);
         res.setResult(userRepository.save(u));
         return res;
+    }
+    @Override
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("Could not find user");
+        }
+
+        return user;
     }
 
 }

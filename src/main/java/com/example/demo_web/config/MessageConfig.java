@@ -21,7 +21,9 @@ public class MessageConfig {
     public final String MESSAGE_UPDATEITEM="update item success";
     public final String MESSAGE_DELETEITEM="delete item success";
     public final String MESSAGE_SETROLE="set role success";
-    public final String MESSAGE_ADDAUCTION="add auction success";
+    public final String MESSAGE_ADDAUCTIONSUCCES="add auction success";
+    public final String MESSAGE_ADDAUCTIONERROR="add auction fail";
+    public final String MESSAGE_ADDAUCTIONFAIL="item already exists";
     public final String MESSAGE_UPDATEAUCTION="update auction success";
     public final String MESSAGE_DELETEAUCTION="delete auction success";
 

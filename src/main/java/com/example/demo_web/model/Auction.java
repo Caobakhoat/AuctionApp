@@ -1,16 +1,16 @@
 package com.example.demo_web.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,9 +46,11 @@ public class Auction implements Serializable {
     @JoinColumn(name = "idItem", nullable = false)
     private Item item;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "auctionBids")
-    private List<Bids> listBid;
+    @JsonIgnore
+    private List<Bids> listBid = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "auctionTransaction")
-    private List<Transaction> listTransaction;
+    @JsonIgnore
+    private List<Transaction> listTransaction=new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "idUserCreate", nullable = false)
     private User userCreatAuction;
