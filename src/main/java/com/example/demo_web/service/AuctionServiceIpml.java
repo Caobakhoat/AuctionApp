@@ -49,7 +49,7 @@ public class AuctionServiceIpml implements AuctionService{
             newauction.setTimeStart(req.getTimeStart());
             newauction.setCurentPrice(req.getInitPrice());
             newauction.setInitPrice(req.getInitPrice());
-            newauction.setStatus(req.getStatus());
+            newauction.setStatus(0);
             newauction.setIsDelete(0);
             newauction.setTimeEnd(req.getTimeEnd());
             User user = userRepository.findById(req.getIdUser()).orElse(null);

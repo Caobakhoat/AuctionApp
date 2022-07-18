@@ -13,7 +13,6 @@ public class AddAuctionRequest {
     private int initPrice;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
-    private int status;
     private int idUser;
     private int idItem;
 }
