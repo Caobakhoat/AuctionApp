@@ -43,6 +43,21 @@ export const adminApi = appApi.injectEndpoints({
             }),
             providesTags: ['Auction'],
         }),
+        addAuction: builder.mutation<BaseResponse<Auction>, { initPrice: string,timeStart:string,timeEnd:string,idUser:string,idItem:string }>({
+            query: (arg) => ({
+                url: 'auction/addAuction',
+                method: "POST",
+                body: arg
+            }),
+            invalidatesTags: ['Auction'],
+        }),
     }),
 })
-export const {useAdminLoginMutation, useGetAllUsersQuery, useGetAllItemsQuery, useAddItemMutation,useGetAllAuctionsQuery} = adminApi;
+export const {
+    useAdminLoginMutation,
+    useGetAllUsersQuery,
+    useGetAllItemsQuery,
+    useAddItemMutation,
+    useGetAllAuctionsQuery,
+    useAddAuctionMutation
+} = adminApi;

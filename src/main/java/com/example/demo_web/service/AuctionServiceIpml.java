@@ -47,7 +47,7 @@ public class AuctionServiceIpml implements AuctionService{
         Auction newauction = new Auction();
         try {
             newauction.setTimeStart(req.getTimeStart());
-            newauction.setCurentPrice(req.getCurentPrice());
+            newauction.setCurentPrice(req.getInitPrice());
             newauction.setInitPrice(req.getInitPrice());
             newauction.setStatus(req.getStatus());
             newauction.setIsDelete(0);
