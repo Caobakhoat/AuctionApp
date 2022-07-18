@@ -5,7 +5,7 @@ import {Button, Form, Input, Row} from "antd";
 import {useLoginMutation} from "./auth.api";
 import {connect} from "react-redux";
 import {RootState} from "../../store";
-import {User} from "../../model/user.model";
+import {User} from "../../model/user";
 // import {RootState} from "@/store";
 // import {User} from "@/model/user.model";
 

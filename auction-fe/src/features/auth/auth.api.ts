@@ -1,4 +1,4 @@
-import {BaseResponse, LoginResponse} from "../../model/user.model";
+import {BaseResponse, LoginResponse} from "../../model/user";
 import {appApi} from "../../api";
 
 export const authApi = appApi.injectEndpoints({

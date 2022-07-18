@@ -4,7 +4,7 @@ import {Navigate} from "react-router-dom";
 import {Button, Form, Input, Row} from "antd";
 import {connect} from "react-redux";
 import {RootState} from "../../store";
-import {User} from "../../model/user.model";
+import {User} from "../../model/user";
 import {useAdminLoginMutation} from "./admin.api";
 
 

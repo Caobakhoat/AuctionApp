@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {User} from "../../model/user.model";
+import {User} from "../../model/user";
 import {adminApi} from "./admin.api";
 
 type AuthState = {

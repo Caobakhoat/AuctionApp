@@ -7,7 +7,7 @@ import home from "../../assets/img/home.png";
 import binhco from "../../assets/img/binhco100tuoi.jpeg";
 import bathuong from "../../assets/img/bathuongco.jpg";
 import { RootState } from "../../store";
-import { User } from "../../model/user.model";
+import { User } from "../../model/user";
 
 const mapState = (state: RootState) => ({
     user: state.auth.user,

@@ -1,6 +1,7 @@
-import {BaseResponse, LoginResponse, User} from "../../model/user.model";
+import {BaseResponse, LoginResponse, User} from "../../model/user";
 import {appApi} from "../../api";
-import {Item} from "../../model/item.model";
+import {Item} from "../../model/item";
+import {Auction} from "../../model/auction";
 
 export const adminApi = appApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -35,7 +36,13 @@ export const adminApi = appApi.injectEndpoints({
                 }
             },
             invalidatesTags: ['Item'],
-        })
+        }),
+        getAllAuctions: builder.query<BaseResponse<Auction[]>, void>({
+            query: () => ({
+                url: 'auction/getAllAuctions'
+            }),
+            providesTags: ['Auction'],
+        }),
     }),
 })
-export const {useAdminLoginMutation, useGetAllUsersQuery, useGetAllItemsQuery, useAddItemMutation} = adminApi;
+export const {useAdminLoginMutation, useGetAllUsersQuery, useGetAllItemsQuery, useAddItemMutation,useGetAllAuctionsQuery} = adminApi;

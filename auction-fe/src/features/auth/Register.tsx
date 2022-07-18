@@ -5,7 +5,7 @@ import {Button, DatePicker, Form, Input, Row, Upload} from "antd";
 import {useRegisterMutation} from "./auth.api";
 import {connect} from "react-redux";
 import {RootState} from "../../store";
-import {User} from "../../model/user.model";
+import {User} from "../../model/user";
 
 
 const mapState = (state: RootState) => ({

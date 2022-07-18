@@ -3,7 +3,7 @@ import {useAddItemMutation, useGetAllItemsQuery} from "../admin.api";
 import Table, {ColumnsType} from "antd/lib/table";
 import {Button, Form, Input, Modal, Space, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
-import {Item} from "../../../model/item.model";
+import {Item} from "../../../model/item";
 
 const columns: ColumnsType<Item> = [
     {
@@ -42,7 +42,7 @@ const columns: ColumnsType<Item> = [
 
 const ItemManage = () => {
     const [isShowAddItemModal,setIsShowAddItemModal]=useState(false);
-    const {data,isLoading}=useGetAllItemsQuery();
+    const {data,isFetching}=useGetAllItemsQuery();
     const [addItem]=useAddItemMutation();
     const [form] = Form.useForm();
     return (

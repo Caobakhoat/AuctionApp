@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {authApi} from "./auth.api";
-import {User} from "../../model/user.model";
+import {User} from "../../model/user";
 
 type AuthState = {
     user:User|null,

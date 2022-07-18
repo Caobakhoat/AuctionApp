@@ -8,7 +8,7 @@ import Home from "./features/home/Home";
 import AdminLogin from "./features/admin/AdminLogin";
 import {connect} from "react-redux";
 import {RootState} from "./store";
-import {User} from "./model/user.model";
+import {User} from "./model/user";
 import Admin from "./features/admin/Admin";
 import UserManage from "./features/admin/user_manage/UserManage";
 import ItemManage from "./features/admin/item_manage/ItemManage";
