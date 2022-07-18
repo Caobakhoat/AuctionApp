@@ -11,10 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AddAuctionRequest {
     private int initPrice;
-    private int curentPrice;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
-    private int status;
     private int idUser;
     private int idItem;
 }
