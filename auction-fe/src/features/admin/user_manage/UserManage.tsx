@@ -1,9 +1,9 @@
 import React from 'react'
-import {useGetAllUsersQuery} from "../admin.api";
 import Table, {ColumnsType} from "antd/lib/table";
 import {User} from "../../../model/user";
 import {Dropdown, Menu, Space} from "antd";
 import {DownOutlined} from "@ant-design/icons";
+import {useGetAllUsersQuery} from "./user.api";
 
 const menu = (
     <Menu

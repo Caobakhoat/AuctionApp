@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
-import {useAddItemMutation, useGetAllItemsQuery} from "../admin.api";
 import Table, {ColumnsType} from "antd/lib/table";
 import {Button, Form, Input, Modal, Space, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
 import {Item} from "../../../model/item";
+import {useAddItemMutation, useGetAllItemsQuery} from "./item.api";
 
 const columns: ColumnsType<Item> = [
     {

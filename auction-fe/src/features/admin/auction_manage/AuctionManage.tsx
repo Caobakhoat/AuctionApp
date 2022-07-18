@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
-import {useAddAuctionMutation, useGetAllAuctionsQuery, useGetAllItemsQuery} from "../admin.api";
 import Table, {ColumnsType} from "antd/lib/table";
 import {Item} from "../../../model/item";
 import {Button, DatePicker, Form, Input, Modal, Select, Space} from "antd";
 import {Auction} from "../../../model/auction";
 import {User} from "../../../model/user";
+import {useAddAuctionMutation, useGetAllAuctionsQuery} from "./auction.api";
+import {useGetAllItemsQuery} from "../item_manage/item.api";
 
 const columns: ColumnsType<Auction> = [
     {
