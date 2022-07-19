@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLConnection;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @RestController
@@ -65,6 +67,8 @@ public class ItemController {
         item.setIsDelete(0);
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         item.setNameImage(fileName);
+        String uploadDir = EXTERNAL_FILE_PATH + id;
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         item.setId(id);
         res=itemServiceIpml.updateItem(item);
         return ResponseEntity.ok().body(res) ;

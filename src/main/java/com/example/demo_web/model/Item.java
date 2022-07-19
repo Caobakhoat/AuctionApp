@@ -45,5 +45,9 @@ public class Item implements Serializable {
         return "http://localhost:8080/item/imageItem/" + id + "/" + nameImage;
     }
 
-
+    @Transient
+    public String getPhotosImagePathLocal() {
+        if (nameImage == null ) return null;
+        return  id + "/" + nameImage;
+    }
 }

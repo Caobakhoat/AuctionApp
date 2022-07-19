@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.ArrayList;
 
 @Service
@@ -20,6 +22,8 @@ public class ItemServiceImpl implements ItemService{
     ItemRepository itemRepository;
     @Autowired
     MessageConfig messageConfig;
+    private static final String EXTERNAL_FILE_PATH = "src/main/resources/static/item-photos/";
+
     @Override
     public Item saveItem(Item item) {
         return itemRepository.save(item);
@@ -43,9 +47,30 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public UpdateItemResponse updateItem(Item item) {
         UpdateItemResponse res = new UpdateItemResponse();
+        Item oldItem = itemRepository.findById(item.getId()).orElse(null);
+        if(!oldItem.getName().equals(item.getName())){
+            oldItem.setName(item.getName());
+        }
+        if(!oldItem.getDescription().equals(item.getDescription())){
+            oldItem.setDescription(item.getDescription());
+        }
+        if(!oldItem.getNameImage().equals(item.getNameImage())){
+            Path path = Paths.get(EXTERNAL_FILE_PATH+oldItem.getPhotosImagePathLocal());
+            try {
+                Files.delete(path);
+                System.out.println("File or directory deleted successfully");
+            } catch (NoSuchFileException ex) {
+                System.out.printf("No such file or directory: %s\n", path);
+            } catch (DirectoryNotEmptyException ex) {
+                System.out.printf("Directory %s is not empty\n", path);
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+            oldItem.setNameImage(item.getNameImage());
+        }
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_UPDATEITEM);
-        res.setResult(itemRepository.save(item));
+        res.setResult(itemRepository.save(oldItem));
         return res;
     }
 
