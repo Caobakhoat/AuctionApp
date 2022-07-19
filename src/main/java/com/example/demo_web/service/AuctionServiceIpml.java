@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -114,5 +115,19 @@ public class AuctionServiceIpml implements AuctionService{
     public ArrayList<Auction> findAuctionbyName(String name) {
         return auctionRepository.searchAuction(name);
     }
+    @Scheduled(fixedRate = 1000)
+    public void checkStartStopAuction() {
+        ArrayList<Auction> listAuction = (ArrayList<Auction>) auctionRepository.findAll();
+        for(Auction auction :listAuction){
+            LocalDateTime now = LocalDateTime.now();
+            if(now.isAfter(auction.getTimeStart())){
+                auction.setStatus(1);
+            }
+            if(now.isAfter(auction.getTimeEnd())){
+                auction.setStatus(-1);
+            }
 
+            auctionRepository.save(auction);
+        }
+    }
 }
