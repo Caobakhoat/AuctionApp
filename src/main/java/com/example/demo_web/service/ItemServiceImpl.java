@@ -55,7 +55,7 @@ public class ItemServiceImpl implements ItemService{
             oldItem.setDescription(item.getDescription());
         }
         if(!oldItem.getNameImage().equals(item.getNameImage())){
-            Path path = Paths.get(EXTERNAL_FILE_PATH+oldItem.getPhotosImagePathLocal());
+            Path path = Paths.get(EXTERNAL_FILE_PATH+oldItem.getId()+"/"+oldItem.getNameImage());
             try {
                 Files.delete(path);
                 System.out.println("File or directory deleted successfully");
