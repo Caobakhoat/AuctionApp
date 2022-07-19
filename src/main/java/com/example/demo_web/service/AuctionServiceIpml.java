@@ -122,12 +122,12 @@ public class AuctionServiceIpml implements AuctionService{
             LocalDateTime now = LocalDateTime.now();
             if(now.isAfter(auction.getTimeStart())){
                 auction.setStatus(1);
+                auctionRepository.save(auction);
             }
             if(now.isAfter(auction.getTimeEnd())){
                 auction.setStatus(-1);
+                auctionRepository.save(auction);
             }
-
-            auctionRepository.save(auction);
         }
     }
 }
