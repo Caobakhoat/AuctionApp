@@ -54,6 +54,7 @@ public class Auction implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idUserCreate", nullable = false)
     private User userCreatAuction;
-
-
+    @OneToOne
+    @JoinColumn(name = "idWinner")
+    private User winner;
 }

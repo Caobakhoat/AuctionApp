@@ -75,10 +75,11 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public DeleteItemResponse deleteItem(Item item) {
+    public DeleteItemResponse deleteItem(int item_id) {
         DeleteItemResponse res = new DeleteItemResponse();
+        Item item = itemRepository.findById(item_id).orElse(null);
         item.setIsDelete(1);
-        updateItem(item);
+        itemRepository.save(item);
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_DELETEITEM);
         res.setResult(true);

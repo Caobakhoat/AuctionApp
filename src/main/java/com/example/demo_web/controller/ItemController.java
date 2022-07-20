@@ -74,9 +74,9 @@ public class ItemController {
         return ResponseEntity.ok().body(res) ;
     }
     @DeleteMapping(value = "/deleteItem")
-    public ResponseEntity deleteItem (@RequestBody Item item){
+    public ResponseEntity deleteItem (@RequestParam int  item_id){
         DeleteItemResponse res = new DeleteItemResponse();
-        res =itemServiceIpml.deleteItem(item);
+        res =itemServiceIpml.deleteItem(item_id);
         return ResponseEntity.ok().body(res) ;
     }
 
