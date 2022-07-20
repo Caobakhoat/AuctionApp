@@ -1,62 +1,13 @@
 import React, {useState} from 'react'
 import Table, {ColumnsType} from "antd/lib/table";
 import {Item} from "../../../model/item";
-import {Button, DatePicker, Form, Input, Modal, Select, Space} from "antd";
+import {Button, DatePicker, Form, Input, Modal, Popconfirm, Select, Space} from "antd";
 import {Auction} from "../../../model/auction";
 import {User} from "../../../model/user";
 import {useAddAuctionMutation, useGetAllAuctionsQuery} from "./auction.api";
 import {useGetAllItemsQuery} from "../item_manage/item.api";
 
-const columns: ColumnsType<Auction> = [
-    {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-    },
-    {
-        title: 'Item',
-        dataIndex: 'item',
-        key: 'item',
-        render: (_, record) => (
-            record.item.name
-        ),
-    },
-    {
-        title: 'Init Price',
-        dataIndex: 'initPrice',
-        key: 'initPrice',
-    },
-    {
-        title: 'Start Date',
-        dataIndex: 'timeStart',
-        key: 'timeStart',
-    },
-    {
-        title: 'End Date',
-        dataIndex: 'timeEnd',
-        key: 'timeEnd',
-    },
-    {
-        title: 'Status',
-        key: 'status',
-        render:(_,record)=>(
-            <>
-                {record.status===1 && "Đang diễn ra"}
-                {record.status===-1 && "Đã kết thúc"}
-                {record.status===0 && "Chưa diễn ra"}
-            </>
-        )
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (_, record) => (
-            <Space size="middle">
-                Edit|Delete
-            </Space>
-        ),
-    },
-];
+
 type Props = {
     userCurrent: User|null;
 };
@@ -65,8 +16,69 @@ const AuctionManage = ({userCurrent}: Props) => {
     const {data: items, isFetching: isGettingAllItems} = useGetAllItemsQuery();
     const [addAuction, {isLoading}] = useAddAuctionMutation();
     const [isShowAddAuctionModal, setIsShowAddAuctionModal] = useState(false);
+
     const [form] = Form.useForm();
     const dateFormat = 'YYYY-MM-DD hh:mm:ss';
+    const columns: ColumnsType<Auction> = [
+        {
+            title: 'Id',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Item',
+            dataIndex: 'item',
+            key: 'item',
+            render: (_, record) => (
+                record.item.name
+            ),
+        },
+        {
+            title: 'Init Price',
+            dataIndex: 'initPrice',
+            key: 'initPrice',
+        },
+        {
+            title: 'Start Date',
+            dataIndex: 'timeStart',
+            key: 'timeStart',
+        },
+        {
+            title: 'End Date',
+            dataIndex: 'timeEnd',
+            key: 'timeEnd',
+        },
+        {
+            title: 'Status',
+            key: 'status',
+            render:(_,record)=>(
+                <>
+                    {record.status===1 && "Đang diễn ra"}
+                    {record.status===-1 && "Đã kết thúc"}
+                    {record.status===0 && "Chưa diễn ra"}
+                </>
+            )
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <Popconfirm
+                        title="Are you sure to delete this task?"
+                        // onConfirm={async () => {
+                        //     await deleteAuction({auction_id: record.id});
+                        // }}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <div className="bg-red-100 text-white cursor-pointer p-8">Delete</div>
+                    </Popconfirm>
+                </Space>
+            ),
+        },
+    ];
+
     return (
         <>
             <div className="fw-700 fs-50 mb-32">Auction Manage</div>

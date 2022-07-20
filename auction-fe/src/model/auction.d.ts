@@ -2,7 +2,7 @@ import {User} from "./user";
 import {Item} from "./item";
 
 export interface Auction{
-    id:string;
+    id:number;
     userCreate:User;
     item:Item;
     initPrice:number;

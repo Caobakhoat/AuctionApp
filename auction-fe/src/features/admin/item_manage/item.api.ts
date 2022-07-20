@@ -10,7 +10,7 @@ export const itemApi = appApi.injectEndpoints({
             }),
             providesTags: ['Item'],
         }),
-        addItem: builder.mutation<BaseResponse<Item>, { name: string, description: string, imageItem?: File|null }>({
+        addItem: builder.mutation<BaseResponse<Item>, { name: string, description: string, imageItem?: File | null }>({
             query(data) {
                 const formData = new FormData();
                 formData.append("name", data.name);
@@ -24,7 +24,7 @@ export const itemApi = appApi.injectEndpoints({
             },
             invalidatesTags: ['Item'],
         }),
-        updateItem: builder.mutation<BaseResponse<Item>, {id:number, name: string, description: string, imageItem?: File|null }>({
+        updateItem: builder.mutation<BaseResponse<Item>, { id: number, name: string, description: string, imageItem?: File | null }>({
             query(data) {
                 const formData = new FormData();
                 formData.append("id", data.id.toString());
@@ -39,10 +39,19 @@ export const itemApi = appApi.injectEndpoints({
             },
             invalidatesTags: ['Item'],
         }),
+        deleteItem: builder.mutation<BaseResponse<boolean>, { item_id: number }>({
+            query: (arg) => ({
+                url: 'item/deleteItem',
+                method: "DELETE",
+                body: arg
+            }),
+            invalidatesTags: ['Item'],
+        })
     }),
 })
 export const {
     useGetAllItemsQuery,
     useAddItemMutation,
     useUpdateItemMutation,
+    useDeleteItemMutation,
 } = itemApi;

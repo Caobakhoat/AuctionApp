@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Table, {ColumnsType} from "antd/lib/table";
 import {Button, Popconfirm, Space} from "antd";
 import {Item} from "../../../model/item";
-import {useGetAllItemsQuery} from "./item.api";
+import {useDeleteItemMutation, useGetAllItemsQuery} from "./item.api";
 import ItemEditModal from "./ItemEditModal";
 import ItemAddModal from "./ItemAddModal";
 
@@ -11,6 +11,7 @@ const ItemManage = () => {
     const [isShowAddItemModal, setIsShowAddItemModal] = useState(false);
     const [isShowEditItemModal, setIsShowEditItemModal] = useState(false);
     const {data, isFetching} = useGetAllItemsQuery();
+    const [deleteItem,{isLoading}]=useDeleteItemMutation();
     const [modalData, setModalData] = useState<Item>({
         id: 0,
         name: "",
@@ -53,8 +54,8 @@ const ItemManage = () => {
                         </div>
                         <Popconfirm
                             title="Are you sure to delete this task?"
-                            onConfirm={() => {
-                                console.log("ok")
+                            onConfirm={async () => {
+                                await deleteItem({item_id: record.id});
                             }}
                             okText="Yes"
                             cancelText="No"
@@ -81,7 +82,6 @@ const ItemManage = () => {
             <ItemAddModal visible={isShowAddItemModal} onClose={()=>setIsShowAddItemModal(false)}/>
             <Table columns={columns} dataSource={data?.result.map((el, idx) => ({key: idx, ...el}))}/>
             <ItemEditModal visible={isShowEditItemModal} onClose={() => setIsShowEditItemModal(false)} item={modalData}/>
-
         </>
     )
 }
