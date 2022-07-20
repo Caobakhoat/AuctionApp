@@ -5,6 +5,7 @@ import com.example.demo_web.config.FileUploadUtil;
 import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.User;
 import com.example.demo_web.request.LoginRequest;
+import com.example.demo_web.request.SetAdminRequest;
 import com.example.demo_web.response.BaseResponse;
 import com.example.demo_web.response.RegisterResponse;
 import com.example.demo_web.response.SetAdminResponse;
@@ -96,8 +97,8 @@ public class UserController {
     }
 
     @PutMapping("/setAdmin")
-    public ResponseEntity setAdmin(@RequestBody User user){
-        SetAdminResponse res = userService.setAdmin(user);
+    public ResponseEntity setAdmin(@RequestBody SetAdminRequest req){
+        SetAdminResponse res = userService.setAdmin(req.getIdUser());
         return ResponseEntity.ok().body(res);
     }
 
