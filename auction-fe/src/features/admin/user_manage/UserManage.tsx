@@ -73,7 +73,7 @@ const UserManage = () => {
     return (
         <>
             <div className="fw-700 fs-50 mb-32">User Manage</div>
-            <Table columns={columns} dataSource={data?.result} rowKey="username"/>
+            <Table columns={columns} dataSource={data?.result.map((el, idx) => ({key: idx, ...el}))}/>
         </>
     )
 }

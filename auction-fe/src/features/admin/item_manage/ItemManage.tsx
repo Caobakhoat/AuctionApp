@@ -1,108 +1,87 @@
 import React, {useState} from 'react'
 import Table, {ColumnsType} from "antd/lib/table";
-import {Button, Form, Input, Modal, Space, Upload} from "antd";
-import {UploadOutlined} from "@ant-design/icons";
+import {Button, Popconfirm, Space} from "antd";
 import {Item} from "../../../model/item";
-import {useAddItemMutation, useGetAllItemsQuery} from "./item.api";
+import {useGetAllItemsQuery} from "./item.api";
+import ItemEditModal from "./ItemEditModal";
+import ItemAddModal from "./ItemAddModal";
 
-const columns: ColumnsType<Item> = [
-    {
-        title: 'Id',
-        dataIndex: 'id',
-        key: 'id',
-    },
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-    },
-    {
-        title: 'Image',
-        dataIndex: 'image',
-        key: 'image',
-        render:(_,record)=>(
-            <img src={record.photosImagePath} height={50} alt="#"/>
-        ),
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (_, record) => (
-            <Space size="middle">
-                Edit|Delete
-            </Space>
-        ),
-    },
-];
 
 const ItemManage = () => {
-    const [isShowAddItemModal,setIsShowAddItemModal]=useState(false);
-    const {data,isFetching}=useGetAllItemsQuery();
-    const [addItem]=useAddItemMutation();
-    const [form] = Form.useForm();
+    const [isShowAddItemModal, setIsShowAddItemModal] = useState(false);
+    const [isShowEditItemModal, setIsShowEditItemModal] = useState(false);
+    const {data, isFetching} = useGetAllItemsQuery();
+    const [modalData, setModalData] = useState<Item>({
+        id: 0,
+        name: "",
+        description: "",
+        nameImage: "",
+        photosImagePath: ""
+    });
+    const columns: ColumnsType<Item> = [
+        {
+            title: 'Id',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
+        },
+        {
+            title: 'Image',
+            dataIndex: 'image',
+            key: 'image',
+            render: (_, record) => (
+                <img src={record.photosImagePath} height={50} alt="#"/>
+            ),
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_, record: Item) => (
+                <>
+                    <Space size="middle">
+                        <div className="bg-light-blue-100 text-white cursor-pointer p-8"
+                             onClick={() => showModal(record)}>Edit
+                        </div>
+                        <Popconfirm
+                            title="Are you sure to delete this task?"
+                            onConfirm={() => {
+                                console.log("ok")
+                            }}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <div className="bg-red-100 text-white cursor-pointer p-8">Delete</div>
+                        </Popconfirm>
+                    </Space>
+                </>
+            ),
+        },
+    ];
+
+    const showModal = (record: Item) => {
+        setModalData(record);
+        setIsShowEditItemModal(true);
+    }
     return (
         <>
             <div className="fw-700 fs-50 mb-32">Item Manage</div>
             <div className="mt-20 mb-20">
-                <Button className="bg-green-100 text-white border-radius-sm" onClick={()=>setIsShowAddItemModal(true)}>Add</Button>
+                <Button className="bg-green-100 text-white border-radius-sm"
+                        onClick={() => setIsShowAddItemModal(true)}>Add</Button>
             </div>
-            <Modal title="Add Item" visible={isShowAddItemModal} footer={null} onCancel={()=>setIsShowAddItemModal(false)}>
-                <Form
-                    form={form}
-                    name="basic"
-                    labelCol={{ offset:1,span: 5 }}
-                    wrapperCol={{ span: 16 }}
-                    requiredMark={false}
-                    autoComplete="off"
-                    onFinish={async (values)=>{
-                        const imageItem=values.imageItem.file.originFileObj;
-                        const item={...values,imageItem};
-                        await addItem(item).unwrap();
-                        form.resetFields();
-                        setIsShowAddItemModal(false);
-                    }}
-                >
-                    <Form.Item
-                        label="Name"
-                        name="name"
-                        rules={[{ required: true, message: 'Please input your name!' }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        label="Description"
-                        name="description"
-                        rules={[{ required: true, message: 'Please input your description!' }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="imageItem"
-                        label="Image Item"
-                        valuePropName="formList"
-                    >
-                        <Upload
-                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                            listType="picture"
-                            maxCount={1}
-                        >
-                            <Button icon={<UploadOutlined />}>Image Item</Button>
-                        </Upload>
-                    </Form.Item>
-
-                    <Form.Item wrapperCol={{span: 24 }} className="text-center">
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Modal>
+            <ItemAddModal visible={isShowAddItemModal} onClose={()=>setIsShowAddItemModal(false)}/>
             <Table columns={columns} dataSource={data?.result.map((el, idx) => ({key: idx, ...el}))}/>
+            <ItemEditModal visible={isShowEditItemModal} onClose={() => setIsShowEditItemModal(false)} item={modalData}/>
+
         </>
     )
 }

@@ -10,15 +10,30 @@ export const itemApi = appApi.injectEndpoints({
             }),
             providesTags: ['Item'],
         }),
-        addItem: builder.mutation<BaseResponse<Item>, { name: string, description: string, imageItem: File }>({
+        addItem: builder.mutation<BaseResponse<Item>, { name: string, description: string, imageItem?: File|null }>({
             query(data) {
                 const formData = new FormData();
                 formData.append("name", data.name);
                 formData.append("description", data.description);
-                formData.append("imageItem", data.imageItem);
+                if (data.imageItem) formData.append("imageItem", data?.imageItem);
                 return {
                     url: 'item/addItem',
                     method: "POST",
+                    body: formData
+                }
+            },
+            invalidatesTags: ['Item'],
+        }),
+        updateItem: builder.mutation<BaseResponse<Item>, {id:number, name: string, description: string, imageItem?: File|null }>({
+            query(data) {
+                const formData = new FormData();
+                formData.append("id", data.id.toString());
+                formData.append("name", data.name);
+                formData.append("description", data.description);
+                if (data.imageItem) formData.append("imageItem", data?.imageItem);
+                return {
+                    url: 'item/updateItem',
+                    method: "PUT",
                     body: formData
                 }
             },
@@ -29,4 +44,5 @@ export const itemApi = appApi.injectEndpoints({
 export const {
     useGetAllItemsQuery,
     useAddItemMutation,
+    useUpdateItemMutation,
 } = itemApi;

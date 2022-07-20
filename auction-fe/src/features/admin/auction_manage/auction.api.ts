@@ -10,7 +10,7 @@ export const auctionApi = appApi.injectEndpoints({
             }),
             providesTags: ['Auction'],
         }),
-        addAuction: builder.mutation<BaseResponse<Auction>, { initPrice: string,timeStart:string,timeEnd:string,idUser:string,idItem:string }>({
+        addAuction: builder.mutation<BaseResponse<Auction>, { initPrice: number,timeStart:string,timeEnd:string,idUser:string,idItem:string }>({
             query: (arg) => ({
                 url: 'auction/addAuction',
                 method: "POST",

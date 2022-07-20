@@ -38,8 +38,14 @@ const columns: ColumnsType<Auction> = [
     },
     {
         title: 'Status',
-        dataIndex: 'status',
         key: 'status',
+        render:(_,record)=>(
+            <>
+                {record.status===1 && "Đang diễn ra"}
+                {record.status===-1 && "Đã kết thúc"}
+                {record.status===0 && "Chưa diễn ra"}
+            </>
+        )
     },
     {
         title: 'Action',
@@ -52,7 +58,7 @@ const columns: ColumnsType<Auction> = [
     },
 ];
 type Props = {
-    userCurrent: User;
+    userCurrent: User|null;
 };
 const AuctionManage = ({userCurrent}: Props) => {
     const {data: auctions, isFetching: isGettingAllAuctions} = useGetAllAuctionsQuery();
@@ -119,7 +125,7 @@ const AuctionManage = ({userCurrent}: Props) => {
 
                     <Form.Item wrapperCol={{span: 24}} className="text-center">
                         <Button type="primary" htmlType="submit">
-                            Submit
+                            Add Auction
                         </Button>
                     </Form.Item>
                 </Form>
