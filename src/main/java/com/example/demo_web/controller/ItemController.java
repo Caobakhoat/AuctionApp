@@ -3,6 +3,7 @@ package com.example.demo_web.controller;
 import com.example.demo_web.config.FileUploadUtil;
 import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Item;
+import com.example.demo_web.request.DeleteItemRequest;
 import com.example.demo_web.response.DeleteItemResponse;
 import com.example.demo_web.response.GetAllItemResponse;
 import com.example.demo_web.response.AddItemResponse;
@@ -74,7 +75,8 @@ public class ItemController {
         return ResponseEntity.ok().body(res) ;
     }
     @DeleteMapping(value = "/deleteItem")
-    public ResponseEntity deleteItem (@RequestParam int  item_id){
+    public ResponseEntity deleteItem (@RequestBody DeleteItemRequest req){
+        int item_id =req.getItem_id();
         DeleteItemResponse res = new DeleteItemResponse();
         res =itemServiceIpml.deleteItem(item_id);
         return ResponseEntity.ok().body(res) ;

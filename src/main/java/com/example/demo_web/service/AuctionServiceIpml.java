@@ -32,9 +32,11 @@ public class AuctionServiceIpml implements AuctionService{
     @Autowired
     AuctionRepository auctionRepository;
     @Autowired
-    UserRepository userRepository;
+    UserServiceImpl userService;
     @Autowired
     ItemRepository itemRepository;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     TransactionServiceImpl transactionService;
     @Autowired
@@ -129,9 +131,17 @@ public class AuctionServiceIpml implements AuctionService{
         }
         transactionService.addTransaction(maxbid);
         auction.setWinner(maxbid.getUserBids());
-        User user = userRepository.findById(maxbid.getUserBids().getId()).orElse(null);
-        user.setBalance(user.getBalance()-maxprice);
-        userRepository.save(user);
+        userService.updateBalanceUser(maxbid,maxprice);
+
+    }
+
+    @Override
+    public void deleteItemAuction(Item item) {
+     ArrayList<Auction> listAuction=  auctionRepository.listAuctionItemDelete(item.getId());
+     for (Auction auction :listAuction){
+         auction.setIsDelete(1);
+         auctionRepository.save(auction);
+        }
     }
 
     @Scheduled(fixedDelay = 1000 )

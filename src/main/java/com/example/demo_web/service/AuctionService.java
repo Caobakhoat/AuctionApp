@@ -2,6 +2,7 @@ package com.example.demo_web.service;
 
 import com.example.demo_web.model.Auction;
 
+import com.example.demo_web.model.Item;
 import com.example.demo_web.request.AddAuctionRequest;
 import com.example.demo_web.response.*;
 
@@ -17,4 +18,5 @@ public interface AuctionService {
     ArrayList<Auction> findAuctionbyName(String name);
 
     void setWinner(Auction auction);
+    void deleteItemAuction(Item item);
 }
