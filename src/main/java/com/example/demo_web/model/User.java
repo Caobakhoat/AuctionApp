@@ -55,7 +55,7 @@ public class User implements Serializable,UserDetails {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userBids", cascade= CascadeType.ALL)
     @JsonIgnore
     private List<Bids> listBidUser=new ArrayList<>();
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userCreatAuction", cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userCreate", cascade= CascadeType.ALL)
     @JsonIgnore
     private  List<Auction> listAuctionCreated=new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userTransaction", cascade= CascadeType.ALL)
