@@ -1,13 +1,9 @@
 package com.example.demo_web.service;
 
 import com.example.demo_web.config.MessageConfig;
+import com.example.demo_web.model.*;
 import com.example.demo_web.model.Auction;
-import com.example.demo_web.model.Auction;
-import com.example.demo_web.model.Item;
-import com.example.demo_web.model.User;
-import com.example.demo_web.repository.AuctionRepository;
-import com.example.demo_web.repository.ItemRepository;
-import com.example.demo_web.repository.UserRepository;
+import com.example.demo_web.repository.*;
 import com.example.demo_web.request.AddAuctionRequest;
 import com.example.demo_web.response.*;
 import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
@@ -39,6 +35,10 @@ public class AuctionServiceIpml implements AuctionService{
     UserRepository userRepository;
     @Autowired
     ItemRepository itemRepository;
+    @Autowired
+    TransactionServiceImpl transactionService;
+    @Autowired
+    BidsRepository bidsRepository;
     @Autowired
     MessageConfig messageConfig;
 
@@ -115,18 +115,40 @@ public class AuctionServiceIpml implements AuctionService{
     public ArrayList<Auction> findAuctionbyName(String name) {
         return auctionRepository.searchAuction(name);
     }
-    @Scheduled(fixedRate = 1000)
+
+    @Override
+    public void setWinner(Auction auction) {
+        ArrayList<Bids>listBid = bidsRepository.findByAuctionBids(auction);
+        int maxprice=0;
+        Bids maxbid = new Bids();
+        for(Bids bid :listBid){
+            if(bid.getBid_price()>maxprice){
+                maxprice=bid.getBid_price();
+                maxbid=bid;
+            }
+        }
+        transactionService.addTransaction(maxbid);
+        auction.setWinner(maxbid.getUserBids());
+        User user = userRepository.findById(maxbid.getUserBids().getId()).orElse(null);
+        user.setBalance(user.getBalance()-maxprice);
+        userRepository.save(user);
+    }
+
+    @Scheduled(fixedDelay = 1000 )
     public void checkStartStopAuction() {
         ArrayList<Auction> listAuction = (ArrayList<Auction>) auctionRepository.findAll();
         for(Auction auction :listAuction){
             LocalDateTime now = LocalDateTime.now();
-            if(now.isAfter(auction.getTimeStart())){
-                auction.setStatus(1);
-                auctionRepository.save(auction);
-            }
-            if(now.isAfter(auction.getTimeEnd())){
-                auction.setStatus(-1);
-                auctionRepository.save(auction);
+            if(auction.getStatus()!=-1){
+                if(now.isAfter(auction.getTimeStart())){
+                    auction.setStatus(1);
+                    auctionRepository.save(auction);
+                }
+                if(now.isAfter(auction.getTimeEnd())){
+                    auction.setStatus(-1);
+                    auctionRepository.save(auction);
+                    setWinner(auction);
+                }
             }
         }
     }

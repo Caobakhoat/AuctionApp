@@ -15,4 +15,6 @@ public interface AuctionService {
     DeleteAuctionResponse deleteAuction(Auction auction);
     UpdateAuctionResponse updateAuction(Auction auction);
     ArrayList<Auction> findAuctionbyName(String name);
+
+    void setWinner(Auction auction);
 }
