@@ -1,19 +1,19 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {authApi} from "./auth.api";
 import {User} from "../../model/user";
+import {adminApi} from "./admin.api";
 
 type AuthState = {
     user:User|null,
     token: string | null
 }
 
-const authSlice = createSlice({
+const adminSlice = createSlice({
     name: "auth",
     initialState: {user:null, token: null} as AuthState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addMatcher(
-            authApi.endpoints.login.matchFulfilled,
+            adminApi.endpoints.adminLogin.matchFulfilled,
             (state, {payload}) => {
                 state.user = payload.result.user;
                 state.token = payload.result.token;
@@ -22,5 +22,5 @@ const authSlice = createSlice({
     },
 });
 // export const {setCredentials} = authSlice.actions;
-export default authSlice.reducer;
+export default adminSlice.reducer;
 // export const selectCurrentUser = (state: RootState) => state.auth.user;

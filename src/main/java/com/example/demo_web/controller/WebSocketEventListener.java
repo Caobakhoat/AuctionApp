@@ -1,6 +1,6 @@
 package com.example.demo_web.controller;
 
-import com.example.demo_web.model.ChatMessage;
+import com.example.demo_web.request.BidMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,8 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import static java.lang.String.format;
 
 @Component
 public class WebSocketEventListener {
@@ -21,7 +23,7 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        logger.info("Received a new web socket connection");
+        logger.info("Received a new web socket connection.");
     }
 
     @EventListener
@@ -29,14 +31,15 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
-        if(username != null) {
-            logger.info("User Disconnected : " + username);
+        String roomId = (String) headerAccessor.getSessionAttributes().get("auction_id");
+        if (username != null) {
+            logger.info("User Disconnected: " + username);
 
-            ChatMessage chatMessage = new ChatMessage();
-            chatMessage.setType(ChatMessage.MessageType.LEAVE);
-            chatMessage.setSender(username);
+            BidMessage bidMessage = new BidMessage();
+            bidMessage.setType(BidMessage.MessageType.LEAVE);
+            bidMessage.setSender(username);
 
-            messagingTemplate.convertAndSend("/topic/public", chatMessage);
+            messagingTemplate.convertAndSend(format("/channel/%s", roomId), bidMessage);
         }
     }
 }

@@ -13,5 +13,5 @@ public interface ItemService {
     GetAllItemResponse getAllItem();
 
     UpdateItemResponse updateItem(Item item);
-    DeleteItemResponse deleteItem(Item item);
+    DeleteItemResponse deleteItem(int id_item);
 }

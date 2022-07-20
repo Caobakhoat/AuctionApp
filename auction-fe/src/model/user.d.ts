@@ -7,6 +7,7 @@ export interface User {
     dob:string;
     address:string;
     balance:number;
+    photosImagePath:string;
 }
 
 export interface LoginResponse{

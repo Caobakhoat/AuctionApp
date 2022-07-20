@@ -8,7 +8,7 @@ export const appApi = createApi({
         baseUrl: STATIC_URL,
         prepareHeaders: (headers, { getState }) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
-            const token = (getState() as RootState).auth.token;
+            const token = (getState() as RootState).auth.token || (getState() as RootState).authAdmin.token;
             if (token) {
                 headers.set('authorization', `Bearer ${token}`);
             }
@@ -16,5 +16,6 @@ export const appApi = createApi({
         },
         credentials: 'include',
     }),
+    tagTypes: ['Item','Auction'],
     endpoints: () => ({}),
 });

@@ -2,6 +2,7 @@ package com.example.demo_web.service;
 
 
 import com.example.demo_web.config.MessageConfig;
+import com.example.demo_web.model.Bids;
 import com.example.demo_web.model.User;
 import com.example.demo_web.repository.UserRepository;
 import com.example.demo_web.request.LoginRequest;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +29,7 @@ import java.util.*;
 @Transactional
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService,UserDetailsService {
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -57,7 +57,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     );
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             String accessToken = jwtTokenUtil.generateAccessToken(user);
-            user=userRepository.findByUsername(user.getUsername());
+            System.out.println(accessToken);
+            user =userRepository.findByUsername(user.getUsername());
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("token",accessToken);
             map.put("user", user);
@@ -65,9 +66,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             res.setCode(messageConfig.CODE_SUCCESS);
             res.setMessage(messageConfig.MESSGAGE_LOGINSUCCESS);
             return res;
-
         }
-        catch (BadCredentialsException ex) {
+        catch (Exception ex) {
             res.setCode(messageConfig.CODE_FAILED);
             res.setMessage(messageConfig.MESSGAGE_LOGINFAILED);
             return res;
@@ -95,10 +95,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      return userRepository.findByUsername(username);
-    }
 
     @Override
     public LoginResponse checkLoginAdmin(LoginRequest req) {
@@ -117,7 +113,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             String accessToken = jwtTokenUtil.generateAccessToken(user);
             user = userRepository.findByUsername(user.getUsername());
             if(!user.getRole().equals("admin")){
-                System.out.println("here");
                 res.setCode(messageConfig.CODE_UNAUTHOR_ADMIN);
                 res.setMessage(messageConfig.MESSGAGE_LOGINADMINFAILED);
                 return res;
@@ -129,8 +124,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             res.setCode(messageConfig.CODE_SUCCESS);
             res.setMessage(messageConfig.MESSGAGE_LOGINSUCCESS);
             return res;
-
-        } catch (BadCredentialsException ex) {
+        } catch (Exception ex) {
             res.setCode(messageConfig.CODE_FAILED);
             res.setMessage(messageConfig.MESSGAGE_LOGINFAILED);
             return res;
@@ -144,6 +138,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         res.setMessage(messageConfig.MESSAGE_SETROLE);
         res.setResult(userRepository.save(u));
         return res;
+    }
+
+    @Override
+    public void updateBalanceUser(Bids maxbid, int maxprice) {
+        User user = userRepository.findById(maxbid.getUserBids().getId()).orElse(null);
+        user.setBalance(user.getBalance()-maxprice);
+        userRepository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("Could not find user");
+        }
+
+        return user;
     }
 
 }

@@ -96,8 +96,8 @@ public class UserController {
     }
 
     @PutMapping("/setAdmin")
-    public ResponseEntity setAdmin(@RequestBody User newUser){
-        SetAdminResponse res = userService.setAdmin(newUser);
+    public ResponseEntity setAdmin(@RequestBody User user){
+        SetAdminResponse res = userService.setAdmin(user);
         return ResponseEntity.ok().body(res);
     }
 

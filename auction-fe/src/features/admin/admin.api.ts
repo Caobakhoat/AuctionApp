@@ -1,26 +1,17 @@
-import {BaseResponse, User} from "../../model/user.model";
+import {BaseResponse, LoginResponse} from "../../model/user";
 import {appApi} from "../../api";
-import {Item} from "../../model/item.model";
 
-export const adminApi=appApi.injectEndpoints({
+export const adminApi = appApi.injectEndpoints({
     endpoints: (builder) => ({
-        getAllUsers: builder.query<BaseResponse<User[]>, void>({
-            query: () => ({
-                url: 'user/getAllUsers'
+        adminLogin: builder.mutation<BaseResponse<LoginResponse>, { username: string, password: string }>({
+            query: (credentials) => ({
+                url: 'admin/login',
+                method: 'POST',
+                body: credentials,
             }),
-        }),
-        getAllItems:builder.query<BaseResponse<Item[]>,void>({
-            query:()=>({
-                url:'item/getAllItems'
-            })
-        }),
-        addItem:builder.mutation<BaseResponse<Item>, { name:string,description:string,imageItem:string }>({
-            query:(arg)=>({
-                url:'item/addItem',
-                method: "POST",
-                body: arg,
-            })
         })
     }),
 })
-export const {useGetAllUsersQuery,useGetAllItemsQuery,useAddItemMutation} = adminApi;
+export const {
+    useAdminLoginMutation,
+} = adminApi;

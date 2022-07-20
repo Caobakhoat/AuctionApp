@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -43,6 +44,5 @@ public class Item implements Serializable {
 
         return "http://localhost:8080/item/imageItem/" + id + "/" + nameImage;
     }
-
 
 }

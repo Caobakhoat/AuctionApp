@@ -15,12 +15,17 @@ public class MessageConfig {
     public final String MESSGAGE_REGISTERFAILED=" username already exist";
     public final String MESSGAGE_GETALLUSER="get all user success";
     public final String MESSAGE_GETALLITEM="get all item success";
+    public final String MESSAGE_GETALLAUCTION="get all item success";
     public final String MESSAGE_ADDITEM="add item success";
     public final String MESSAGE_ADDBIDS="add bids success";
     public final String MESSAGE_UPDATEITEM="update item success";
     public final String MESSAGE_DELETEITEM="delete item success";
     public final String MESSAGE_SETROLE="set role success";
-    public final String MESSAGE_DELETEUSER="delete item success";
+    public final String MESSAGE_ADDAUCTIONSUCCES="add auction success";
+    public final String MESSAGE_ADDAUCTIONERROR="add auction fail";
+    public final String MESSAGE_ADDAUCTIONFAIL="item already exists";
+    public final String MESSAGE_UPDATEAUCTION="update auction success";
+    public final String MESSAGE_DELETEAUCTION="delete auction success";
 
 
 }

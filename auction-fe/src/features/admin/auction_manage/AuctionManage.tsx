@@ -1,8 +1,131 @@
-import React from 'react'
+import React, {useState} from 'react'
+import Table, {ColumnsType} from "antd/lib/table";
+import {Item} from "../../../model/item";
+import {Button, DatePicker, Form, Input, Modal, Select, Space} from "antd";
+import {Auction} from "../../../model/auction";
+import {User} from "../../../model/user";
+import {useAddAuctionMutation, useGetAllAuctionsQuery} from "./auction.api";
+import {useGetAllItemsQuery} from "../item_manage/item.api";
 
-const AuctionManage = () => {
+const columns: ColumnsType<Auction> = [
+    {
+        title: 'Id',
+        dataIndex: 'id',
+        key: 'id',
+    },
+    {
+        title: 'Item',
+        dataIndex: 'item',
+        key: 'item',
+        render: (_, record) => (
+            record.item.name
+        ),
+    },
+    {
+        title: 'Init Price',
+        dataIndex: 'initPrice',
+        key: 'initPrice',
+    },
+    {
+        title: 'Start Date',
+        dataIndex: 'timeStart',
+        key: 'timeStart',
+    },
+    {
+        title: 'End Date',
+        dataIndex: 'timeEnd',
+        key: 'timeEnd',
+    },
+    {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+    },
+    {
+        title: 'Action',
+        key: 'action',
+        render: (_, record) => (
+            <Space size="middle">
+                Edit|Delete
+            </Space>
+        ),
+    },
+];
+type Props = {
+    userCurrent: User;
+};
+const AuctionManage = ({userCurrent}: Props) => {
+    const {data: auctions, isFetching: isGettingAllAuctions} = useGetAllAuctionsQuery();
+    const {data: items, isFetching: isGettingAllItems} = useGetAllItemsQuery();
+    const [addAuction, {isLoading}] = useAddAuctionMutation();
+    const [isShowAddAuctionModal, setIsShowAddAuctionModal] = useState(false);
+    const [form] = Form.useForm();
+    const dateFormat = 'YYYY-MM-DD hh:mm:ss';
     return (
-        <div>Auction</div>
+        <>
+            <div className="fw-700 fs-50 mb-32">Auction Manage</div>
+            <div className="mt-20 mb-20">
+                <Button className="bg-green-100 text-white border-radius-sm"
+                        onClick={() => setIsShowAddAuctionModal(true)}>Add</Button>
+            </div>
+            <Modal title="Add Auction" visible={isShowAddAuctionModal} footer={null}
+                   onCancel={() => setIsShowAddAuctionModal(false)}>
+                <Form
+                    form={form}
+                    name="basic"
+                    labelCol={{offset: 1, span: 5}}
+                    wrapperCol={{span: 16}}
+                    requiredMark={false}
+                    autoComplete="off"
+                    onFinish={async (values) => {
+                        try {
+                            const timeStart = values.timeStart.format("YYYY-MM-DDThh:mm:ss");
+                            const timeEnd = values.timeEnd.format("YYYY-MM-DDThh:mm:ss");
+                            const idUser = userCurrent?.id;
+                            const initPrice = parseInt(values.initPrice);
+                            const auction = {...values, timeStart, timeEnd, idUser, initPrice};
+                            await addAuction(auction).unwrap();
+                            form.resetFields();
+                            setIsShowAddAuctionModal(false);
+                        } catch (err) {
+                            console.log(err);
+                        }
+                    }}
+                >
+                    <Form.Item label="Select" name="idItem">
+                        <Select>
+                            {
+                                items?.result.map((item, key) => (
+                                    <Select.Option key={key} value={item.id}>{item.name}</Select.Option>
+                                ))
+                            }
+                        </Select>
+                    </Form.Item>
+                    <Form.Item label="Start Date" name="timeStart"
+                               rules={[{required: true, message: 'Please input Start Date!'}]}>
+                        <DatePicker showTime format={dateFormat}/>
+                    </Form.Item>
+                    <Form.Item label="End Date" name="timeEnd"
+                               rules={[{required: true, message: 'Please input End Date!'}]}>
+                        <DatePicker showTime/>
+                    </Form.Item>
+                    <Form.Item
+                        label="Init Price"
+                        name="initPrice"
+                        rules={[{required: true, message: 'Please input Init Price!'}]}
+                    >
+                        <Input/>
+                    </Form.Item>
+
+                    <Form.Item wrapperCol={{span: 24}} className="text-center">
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
+            <Table columns={columns} dataSource={auctions?.result.map((el, idx) => ({key: idx, ...el}))}/>
+        </>
     )
 }
 

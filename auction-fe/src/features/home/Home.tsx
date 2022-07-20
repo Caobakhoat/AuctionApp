@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Col, Row } from "antd";
+import {Avatar, Card, Col, Row} from "antd";
 import { connect } from "react-redux";
 import Search from "antd/lib/input/Search";
 import home from "../../assets/img/home.png";
 import binhco from "../../assets/img/binhco100tuoi.jpeg";
 import bathuong from "../../assets/img/bathuongco.jpg";
 import { RootState } from "../../store";
-import { User } from "../../model/user.model";
+import { User } from "../../model/user";
 
 const mapState = (state: RootState) => ({
     user: state.auth.user,
@@ -16,11 +16,7 @@ type Props = {
     user: User | null;
 };
 const Home = ({ user }: Props) => {
-    console.log(user);
     const navigate = useNavigate();
-    const toAdminPage = () => {
-        navigate("/admin");
-    };
     return (
         <>
             <div className="h-200 text-center bg-light-blue-100 d-flex justify-center items-center">
@@ -29,7 +25,6 @@ const Home = ({ user }: Props) => {
             <div className="h-62 d-flex items-center justify-space-between bg-deep-blue-100">
                 <div
                     className="logo ml-32 cursor-pointer"
-                    onClick={() => toAdminPage()}
                 >
                     <img src={home} width={40} height={40} alt="Home" />
                 </div>
@@ -43,7 +38,11 @@ const Home = ({ user }: Props) => {
                 </div>
                 <div className="user mr-32">
                     {user ? (
-                        <div className="text-white fs-24 cursor-pointer">{user?.name}</div>
+                        <div className="text-white fs-24 cursor-pointer">
+                            <Avatar src={user?.photosImagePath} size={40} className="mr-8"/>
+                            {/*<img src={user?.photosImagePath} height={20} width={20} alt=""/>*/}
+                            {user?.name}
+                        </div>
                     ) : (
                         <div className="d-flex">
                             <div

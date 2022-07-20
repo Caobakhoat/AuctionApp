@@ -5,6 +5,9 @@ import React, {useState} from 'react';
 import ItemManage from "./item_manage/ItemManage";
 import AuctionManage from "./auction_manage/AuctionManage";
 import UserManage from "./user_manage/UserManage";
+import {connect} from "react-redux";
+import {RootState} from "../../store";
+import {User} from "../../model/user";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -24,7 +27,13 @@ function getItem(
     } as MenuItem;
 }
 
-const Admin: React.FC = () => {
+const mapState = (state: RootState) => ({
+    user: state.authAdmin.user,
+});
+type Props = {
+    user: User | null;
+};
+const Admin = ({user}:Props) => {
     const [collapsed, setCollapsed] = useState(false);
     const [menu,setMenu]=useState("item");
     const items: MenuItem[] = [
@@ -44,20 +53,16 @@ const Admin: React.FC = () => {
             <Layout className="site-layout">
                 <Header className="site-layout-background" style={{ padding: 0 }} />
                 <Content style={{ margin: '0 16px' }}>
-                    {/*<Breadcrumb style={{ margin: '16px 0' }}>*/}
-                    {/*    <Breadcrumb.Item>User</Breadcrumb.Item>*/}
-                    {/*    <Breadcrumb.Item>Bill</Breadcrumb.Item>*/}
-                    {/*</Breadcrumb>*/}
                     <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                         {(menu==="item")&&<ItemManage/>}
-                        {(menu==="auction")&&<AuctionManage/>}
+                        {(menu==="auction")&&<AuctionManage userCurrent={user}/>}
                         {(menu==="user")&&<UserManage/>}
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Copyright ©2022 CBK ft COI</Footer>
+                <Footer style={{ textAlign: 'center' }}>Copyright ©2022 AE PTIT</Footer>
             </Layout>
         </Layout>
     );
 };
 
-export default Admin;
+export default connect(mapState, {})(Admin);

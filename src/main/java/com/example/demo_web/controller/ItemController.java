@@ -3,6 +3,7 @@ package com.example.demo_web.controller;
 import com.example.demo_web.config.FileUploadUtil;
 import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Item;
+import com.example.demo_web.request.DeleteItemRequest;
 import com.example.demo_web.response.DeleteItemResponse;
 import com.example.demo_web.response.GetAllItemResponse;
 import com.example.demo_web.response.AddItemResponse;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLConnection;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @RestController
@@ -65,14 +68,17 @@ public class ItemController {
         item.setIsDelete(0);
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         item.setNameImage(fileName);
+        String uploadDir = EXTERNAL_FILE_PATH + id;
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         item.setId(id);
         res=itemServiceIpml.updateItem(item);
         return ResponseEntity.ok().body(res) ;
     }
     @DeleteMapping(value = "/deleteItem")
-    public ResponseEntity deleteItem (@RequestBody Item item){
+    public ResponseEntity deleteItem (@RequestBody DeleteItemRequest req){
+        int item_id =req.getItem_id();
         DeleteItemResponse res = new DeleteItemResponse();
-        res =itemServiceIpml.deleteItem(item);
+        res =itemServiceIpml.deleteItem(item_id);
         return ResponseEntity.ok().body(res) ;
     }
 
