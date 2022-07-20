@@ -7,10 +7,10 @@ import {User} from "../../../model/user";
 import {useAddAuctionMutation, useGetAllAuctionsQuery} from "./auction.api";
 import {useGetAllItemsQuery} from "../item_manage/item.api";
 
-
 type Props = {
     userCurrent: User|null;
 };
+
 const AuctionManage = ({userCurrent}: Props) => {
     const {data: auctions, isFetching: isGettingAllAuctions} = useGetAllAuctionsQuery();
     const {data: items, isFetching: isGettingAllItems} = useGetAllItemsQuery();

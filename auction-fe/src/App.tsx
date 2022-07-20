@@ -49,7 +49,7 @@ const App = ({user}:Props) =>{
                     <Route path="/admin/home" element={<Admin/>}/>
                     <Route path="/admin/user-manage" element={<UserManage/>}/>
                     <Route path="/admin/item-manage" element={<ItemManage/>}/>
-                    <Route path="/admin/auction-manage" element={<AuctionManage/>}/>
+                    <Route path="/admin/auction-manage" element={<AuctionManage userCurrent={user}/>}/>
                 </Route>
                 <Route path="*" element={<Home/>}/>
             </Routes>
