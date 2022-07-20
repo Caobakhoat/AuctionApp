@@ -2,7 +2,9 @@ package com.example.demo_web.controller;
 
 import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.request.LoginRequest;
+import com.example.demo_web.response.AddAuctionResponse;
 import com.example.demo_web.response.BaseResponse;
+import com.example.demo_web.response.LoginResponse;
 import com.example.demo_web.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class AdminController {
     private final MessageConfig messageConfig;
     @PostMapping(value = "/login")
     public ResponseEntity checkLoginAdmin(@RequestBody LoginRequest req){
-        BaseResponse res = new BaseResponse();
+        LoginResponse res = new LoginResponse();
         res=userService.checkLoginAdmin(req);
         if(res.getCode()==messageConfig.CODE_FAILED){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
