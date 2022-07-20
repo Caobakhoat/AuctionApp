@@ -21,6 +21,8 @@ public class ItemServiceImpl implements ItemService{
     @Autowired
     ItemRepository itemRepository;
     @Autowired
+    AuctionServiceIpml auctionServiceIpml;
+    @Autowired
     MessageConfig messageConfig;
     private static final String EXTERNAL_FILE_PATH = "src/main/resources/static/item-photos/";
 
@@ -31,12 +33,7 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public GetAllItemResponse getAllItem() {
-        ArrayList<Item> listItem =(ArrayList<Item>) itemRepository.findAll();
-        for (Item item : listItem) {
-            if(item.getIsDelete()==1){
-                listItem.remove(item);
-            }
-        }
+        ArrayList<Item> listItem =(ArrayList<Item>) itemRepository.getAllItem();
         GetAllItemResponse res = new GetAllItemResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_GETALLITEM);
@@ -80,6 +77,7 @@ public class ItemServiceImpl implements ItemService{
         Item item = itemRepository.findById(item_id).orElse(null);
         item.setIsDelete(1);
         itemRepository.save(item);
+        auctionServiceIpml.deleteItemAuction(item);
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_DELETEITEM);
         res.setResult(true);

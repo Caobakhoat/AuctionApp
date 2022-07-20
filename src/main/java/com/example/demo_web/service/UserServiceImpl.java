@@ -2,6 +2,7 @@ package com.example.demo_web.service;
 
 
 import com.example.demo_web.config.MessageConfig;
+import com.example.demo_web.model.Bids;
 import com.example.demo_web.model.User;
 import com.example.demo_web.repository.UserRepository;
 import com.example.demo_web.request.LoginRequest;
@@ -138,6 +139,14 @@ public class UserServiceImpl implements UserService,UserDetailsService {
         res.setResult(userRepository.save(u));
         return res;
     }
+
+    @Override
+    public void updateBalanceUser(Bids maxbid, int maxprice) {
+        User user = userRepository.findById(maxbid.getUserBids().getId()).orElse(null);
+        user.setBalance(user.getBalance()-maxprice);
+        userRepository.save(user);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
