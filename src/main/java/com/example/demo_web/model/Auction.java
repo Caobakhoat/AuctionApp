@@ -53,7 +53,7 @@ public class Auction implements Serializable {
     private List<Transaction> listTransaction=new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "idUserCreate", nullable = false)
-    private User userCreatAuction;
+    private User userCreate;
     @OneToOne
     @JoinColumn(name = "idWinner")
     private User winner;

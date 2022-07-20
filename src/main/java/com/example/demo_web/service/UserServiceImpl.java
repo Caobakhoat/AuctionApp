@@ -132,11 +132,13 @@ public class UserServiceImpl implements UserService,UserDetailsService {
     }
 
     @Override
-    public SetAdminResponse setAdmin(User u) {
+    public SetAdminResponse setAdmin(int idUser) {
+        User user = userRepository.findById(idUser).orElse(null);
+        user.setRole("admin");
         SetAdminResponse res = new SetAdminResponse();
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_SETROLE);
-        res.setResult(userRepository.save(u));
+        res.setResult(userRepository.save(user));
         return res;
     }
 

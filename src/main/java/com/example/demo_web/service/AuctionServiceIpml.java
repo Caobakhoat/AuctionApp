@@ -57,7 +57,7 @@ public class AuctionServiceIpml implements AuctionService{
             newauction.setTimeEnd(req.getTimeEnd());
             User user = userRepository.findById(req.getIdUser()).orElse(null);
             Item item = itemRepository.findById(req.getIdItem()).orElse(null);
-            newauction.setUserCreatAuction(user);
+            newauction.setUserCreate(user);
             newauction.setItem(item);
             ArrayList<Auction>listAuction =(ArrayList<Auction>) auctionRepository.findAll();
             for(Auction auction :listAuction){

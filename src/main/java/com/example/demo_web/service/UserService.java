@@ -8,10 +8,10 @@ import com.example.demo_web.response.SetAdminResponse;
 
 public interface UserService  {
     BaseResponse checkLogin(LoginRequest req);
-    User registerUser(User u);
+    User registerUser(User user);
     BaseResponse getAllUser ();
     BaseResponse checkLoginAdmin(LoginRequest req);
-    SetAdminResponse setAdmin(User u);
+    SetAdminResponse setAdmin(int idUser);
     void updateBalanceUser (Bids maxbid,int maxprice);
 
 }
