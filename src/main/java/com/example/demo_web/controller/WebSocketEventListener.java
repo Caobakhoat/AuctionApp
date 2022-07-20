@@ -1,6 +1,6 @@
 package com.example.demo_web.controller;
 
-import com.example.demo_web.model.ChatMessage;
+import com.example.demo_web.request.BidMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +31,15 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
-        String roomId = (String) headerAccessor.getSessionAttributes().get("room_id");
+        String roomId = (String) headerAccessor.getSessionAttributes().get("auction_id");
         if (username != null) {
             logger.info("User Disconnected: " + username);
 
-            ChatMessage chatMessage = new ChatMessage();
-            chatMessage.setType(ChatMessage.MessageType.LEAVE);
-            chatMessage.setSender(username);
+            BidMessage bidMessage = new BidMessage();
+            bidMessage.setType(BidMessage.MessageType.LEAVE);
+            bidMessage.setSender(username);
 
-            messagingTemplate.convertAndSend(format("/channel/%s", roomId), chatMessage);
+            messagingTemplate.convertAndSend(format("/channel/%s", roomId), bidMessage);
         }
     }
 }

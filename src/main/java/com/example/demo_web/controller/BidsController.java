@@ -1,28 +1,41 @@
 package com.example.demo_web.controller;
-
-import com.example.demo_web.request.AddBidsRequest;
-import com.example.demo_web.response.AddBidsResponse;
+import com.example.demo_web.request.BidMessage;
 import com.example.demo_web.service.BidsServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Controller;
 
-@RestController
-@CrossOrigin(origins = "http://localhost:8080")
-@RequiredArgsConstructor
-@RequestMapping("/bids")
+import static java.lang.String.format;
+
+@Controller
 public class BidsController {
+
     @Autowired
-    BidsServiceImpl bidsServiceImpl;
+    private SimpMessageSendingOperations messagingTemplate;
+    @Autowired
+    private BidsServiceImpl bidsService;
 
-    @PostMapping(value = "/add")
-    public ResponseEntity addBids(@RequestParam int bids_price,@RequestParam int idAuction,@RequestHeader("Authorization") String header){
-        AddBidsResponse res = new AddBidsResponse();
-        String token = header.split(" ")[1].trim();
-        AddBidsRequest req = new AddBidsRequest(bids_price,token,idAuction);
-        res= bidsServiceImpl.addBids(req);
-        return ResponseEntity.ok().body(res);
+    @MessageMapping("/bids/{auctionId}/bidAuction")
+    public void bids(@DestinationVariable int auctionId, @Payload BidMessage bidMessage) {
+        bidsService.addBids(bidMessage,auctionId);
+        messagingTemplate.convertAndSend(format("/channel/%s", auctionId), bidMessage);
+    }
 
+    @MessageMapping("/bids/{auctionId}/addUser")
+    public void addUser(@DestinationVariable int auctionId, @Payload BidMessage bidMessage,
+                        SimpMessageHeaderAccessor headerAccessor) {
+        String currentRoomId = (String) headerAccessor.getSessionAttributes().put("auction_id", auctionId);
+        if (currentRoomId != null) {
+            BidMessage leaveMessage = new BidMessage();
+            leaveMessage.setType(BidMessage.MessageType.LEAVE);
+            leaveMessage.setSender(bidMessage.getSender());
+            messagingTemplate.convertAndSend(format("/channel/%s", currentRoomId), leaveMessage);
+        }
+        headerAccessor.getSessionAttributes().put("username", bidMessage.getSender());
+        messagingTemplate.convertAndSend(format("/channel/%s", auctionId), bidMessage);
     }
 }
