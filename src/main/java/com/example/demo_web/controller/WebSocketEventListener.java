@@ -39,7 +39,7 @@ public class WebSocketEventListener {
             bidMessage.setType(BidMessage.MessageType.LEAVE);
             bidMessage.setSender(username);
 
-            messagingTemplate.convertAndSend(format("/channel/%s", roomId), bidMessage);
+            messagingTemplate.convertAndSend(format("/auction/%s", roomId), bidMessage);
         }
     }
 }

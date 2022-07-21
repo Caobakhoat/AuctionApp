@@ -20,5 +20,4 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     ArrayList<Auction> getAuctionProgressing();
     @Query(value = "select * from auctions where is_delete <> 1",nativeQuery = true)
     ArrayList<Auction> getAllAuction();
-
 }
