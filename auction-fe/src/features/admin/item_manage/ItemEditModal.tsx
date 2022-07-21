@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Item} from "../../../model/item";
 import {Button, Input, Modal, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons";
@@ -12,25 +12,29 @@ type Props = {
 const ItemEditModal = ({onClose, visible, item}: Props) => {
     const [updateItem, isLoading] = useUpdateItemMutation();
     const [imageItemUpdate, setImageItemUpdate] = useState(null);
+    const [itemImagePath, setItemImagePath] = useState("");
     const [itemName, setItemName] = useState("");
     const [itemDescription, setItemDescription] = useState("");
-
     const handleChangeImage = ({file}: any) => {
         setImageItemUpdate(file.originFileObj);
     }
-
+    useEffect(()=>{
+        setItemName(item.name);
+        setItemImagePath(item.photosImagePath);
+        setItemDescription(item.description);
+    },[item]);
     return (
         <>
             <Modal getContainer={false} title="Edit Item" visible={visible} footer={null}
                    onCancel={onClose}>
                 <div>Name</div>
-                <Input name="name" defaultValue={item?.name} onChange={(e) => setItemName(e.target.value)}/>
+                <Input name="name" value={itemName} onChange={(e) => setItemName(e.target.value)}/>
                 <div>Description</div>
-                <Input name="description" defaultValue={item?.description}
+                <Input name="description" value={itemDescription}
                        onChange={(e) => setItemDescription(e.target.value)}/>
                 <div>
                     <img src={
-                        imageItemUpdate ? URL.createObjectURL(imageItemUpdate) : item?.photosImagePath
+                        imageItemUpdate ? URL.createObjectURL(imageItemUpdate) : itemImagePath
                     } alt="" width={200}/>
                 </div>
                 <Upload action='https://www.mocky.io/v2/5cc8019d300000980a055e76' onChange={handleChangeImage}

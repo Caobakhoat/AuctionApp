@@ -1,13 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Avatar, Card, Col, Row} from "antd";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Search from "antd/lib/input/Search";
 import home from "../../assets/img/home.png";
-import binhco from "../../assets/img/binhco100tuoi.jpeg";
-import bathuong from "../../assets/img/bathuongco.jpg";
-import { RootState } from "../../store";
-import { User } from "../../model/user";
+import {RootState} from "../../store";
+import {User} from "../../model/user";
+import {useGetAllAuctionsQuery} from "../admin/auction_manage/auction.api";
 
 const mapState = (state: RootState) => ({
     user: state.auth.user,
@@ -17,6 +16,7 @@ type Props = {
 };
 const Home = ({ user }: Props) => {
     const navigate = useNavigate();
+    const {data: auctions, isFetching: isGettingAllAuctions} = useGetAllAuctionsQuery();
     return (
         <>
             <div className="h-200 text-center bg-light-blue-100 d-flex justify-center items-center">
@@ -40,7 +40,6 @@ const Home = ({ user }: Props) => {
                     {user ? (
                         <div className="text-white fs-24 cursor-pointer">
                             <Avatar src={user?.photosImagePath} size={40} className="mr-8"/>
-                            {/*<img src={user?.photosImagePath} height={20} width={20} alt=""/>*/}
                             {user?.name}
                         </div>
                     ) : (
@@ -66,54 +65,22 @@ const Home = ({ user }: Props) => {
                 </div>
             </div>
             <Row gutter={32} className="py-32 px-100 m-0">
-                <Col className="gutter-row" span={6}>
-                    <div className="text-center p-16">
-                        <Card
-                            hoverable
-                            cover={<img src={binhco} className="min-h-275" alt="Item" />}
-                            className="border-radius-md "
-                        >
-                            <h3>Binh co 100 tuoi</h3>
-                        </Card>
-                    </div>
-                </Col>
-                <Col className="gutter-row" span={6}>
-                    <div className="text-center p-16">
-                        <Card
-                            hoverable
-                            cover={<img src={bathuong} className="min-h-275" alt="Item" />}
-                            className="border-radius-md"
-                        >
-                            <h3>Bat huong co 100 tuoi</h3>
-                        </Card>
-                    </div>
-                </Col>
-                <Col className="gutter-row" span={6}>
-                    <div className="text-center p-16">
-                        <Card
-                            hoverable
-                            cover={<img src={binhco} className="min-h-275" alt="Item" />}
-                            className="border-radius-md "
-                        >
-                            <h3>Binh co 100 tuoi</h3>
-                        </Card>
-                    </div>
-                </Col>
-                <Col className="gutter-row" span={6}>
-                    <div className="text-center p-16">
-                        <Card
-                            hoverable
-                            cover={<img src={bathuong} className="min-h-275" alt="Item" />}
-                            className="border-radius-md "
-                        >
-                            <h3>Binh co 100 tuoi</h3>
-                        </Card>
-                    </div>
-                </Col>
+                {auctions?.result.map((auction,key)=>(
+                    <Col className="gutter-row" span={6} key={key}>
+                        <div className="text-center p-16">
+                            <Card
+                                hoverable
+                                cover={<img src={auction.item.photosImagePath} className="min-h-275" alt="Item" />}
+                                className="border-radius-md "
+                            >
+                                <h3>{auction.item.name}</h3>
+                            </Card>
+                        </div>
+                    </Col>
+                ))}
             </Row>
         </>
     );
 };
 
-// export default Home;
 export default connect(mapState, {})(Home);

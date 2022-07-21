@@ -7,9 +7,19 @@ export const userApi = appApi.injectEndpoints({
             query: () => ({
                 url: 'user/getAllUsers'
             }),
+            providesTags: ['User'],
         }),
+        setAdminRole:builder.mutation<BaseResponse<boolean>,{idUser:number}>({
+            query:(arg)=>({
+                url:'user/setAdmin',
+                method:'PUT',
+                body:arg
+            }),
+            invalidatesTags:['User'],
+        })
     }),
 })
 export const {
     useGetAllUsersQuery,
+    useSetAdminRoleMutation,
 } = userApi;
