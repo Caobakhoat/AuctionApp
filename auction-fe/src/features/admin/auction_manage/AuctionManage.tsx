@@ -4,7 +4,7 @@ import {Item} from "../../../model/item";
 import {Button, DatePicker, Form, Input, Modal, Popconfirm, Select, Space} from "antd";
 import {Auction} from "../../../model/auction";
 import {User} from "../../../model/user";
-import {useAddAuctionMutation, useGetAllAuctionsQuery} from "./auction.api";
+import {useAddAuctionMutation, useDeleteAuctionMutation, useGetAllAuctionsQuery} from "./auction.api";
 import {useGetAllItemsQuery} from "../item_manage/item.api";
 
 type Props = {
@@ -14,7 +14,8 @@ type Props = {
 const AuctionManage = ({userCurrent}: Props) => {
     const {data: auctions, isFetching: isGettingAllAuctions} = useGetAllAuctionsQuery();
     const {data: items, isFetching: isGettingAllItems} = useGetAllItemsQuery();
-    const [addAuction, {isLoading}] = useAddAuctionMutation();
+    const [addAuction, {isLoading:isAdding}] = useAddAuctionMutation();
+    const [deleteAuction,{isLoading:isDeleting}]=useDeleteAuctionMutation();
     const [isShowAddAuctionModal, setIsShowAddAuctionModal] = useState(false);
 
     const [form] = Form.useForm();
@@ -66,9 +67,9 @@ const AuctionManage = ({userCurrent}: Props) => {
                 <Space size="middle">
                     <Popconfirm
                         title="Are you sure to delete this task?"
-                        // onConfirm={async () => {
-                        //     await deleteAuction({auction_id: record.id});
-                        // }}
+                        onConfirm={async () => {
+                            await deleteAuction({idAuction: record.id});
+                        }}
                         okText="Yes"
                         cancelText="No"
                     >

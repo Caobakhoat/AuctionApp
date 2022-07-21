@@ -6,7 +6,7 @@ import Search from "antd/lib/input/Search";
 import home from "../../assets/img/home.png";
 import {RootState} from "../../store";
 import {User} from "../../model/user";
-import {useGetAllAuctionsQuery} from "../admin/auction_manage/auction.api";
+import {useGetAuctionInProgressQuery} from "./home.api";
 
 const mapState = (state: RootState) => ({
     user: state.auth.user,
@@ -14,9 +14,9 @@ const mapState = (state: RootState) => ({
 type Props = {
     user: User | null;
 };
-const Home = ({ user }: Props) => {
+const Home = ({user}: Props) => {
     const navigate = useNavigate();
-    const {data: auctions, isFetching: isGettingAllAuctions} = useGetAllAuctionsQuery();
+    const {data: auctions, isFetching: isGettingAllAuctions} = useGetAuctionInProgressQuery();
     return (
         <>
             <div className="h-200 text-center bg-light-blue-100 d-flex justify-center items-center">
@@ -26,7 +26,7 @@ const Home = ({ user }: Props) => {
                 <div
                     className="logo ml-32 cursor-pointer"
                 >
-                    <img src={home} width={40} height={40} alt="Home" />
+                    <img src={home} width={40} height={40} alt="Home"/>
                 </div>
                 <div className="search w-500 ml-200">
                     <Search
@@ -65,12 +65,12 @@ const Home = ({ user }: Props) => {
                 </div>
             </div>
             <Row gutter={32} className="py-32 px-100 m-0">
-                {auctions?.result.map((auction,key)=>(
+                {auctions?.result.map((auction, key) => (
                     <Col className="gutter-row" span={6} key={key}>
                         <div className="text-center p-16">
                             <Card
                                 hoverable
-                                cover={<img src={auction.item.photosImagePath} className="min-h-275" alt="Item" />}
+                                cover={<img src={auction.item.photosImagePath} className="min-h-275" alt="Item"/>}
                                 className="border-radius-md "
                             >
                                 <h3>{auction.item.name}</h3>

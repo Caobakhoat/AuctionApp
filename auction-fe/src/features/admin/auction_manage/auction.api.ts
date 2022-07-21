@@ -18,9 +18,18 @@ export const auctionApi = appApi.injectEndpoints({
             }),
             invalidatesTags: ['Auction'],
         }),
+        deleteAuction: builder.mutation<BaseResponse<boolean>, { idAuction:number }>({
+            query: (arg) => ({
+                url: 'auction/deleteAuction',
+                method: "DELETE",
+                body: arg
+            }),
+            invalidatesTags: ['Auction'],
+        }),
     }),
 })
 export const {
     useGetAllAuctionsQuery,
-    useAddAuctionMutation
+    useAddAuctionMutation,
+    useDeleteAuctionMutation
 } = auctionApi;
