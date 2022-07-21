@@ -4,6 +4,8 @@ import com.example.demo_web.config.MessageConfig;
 import com.example.demo_web.model.Auction;
 import com.example.demo_web.repository.AuctionRepository;
 import com.example.demo_web.request.AddAuctionRequest;
+import com.example.demo_web.request.DeleteAuctionRequest;
+import com.example.demo_web.request.UpdateAuctionRequest;
 import com.example.demo_web.response.*;
 import com.example.demo_web.service.AuctionServiceIpml;
 
@@ -26,7 +28,7 @@ public class AuctionController {
     @Autowired
     AuctionServiceIpml auctionServiceIpml;
     @GetMapping("/getAllAuctions")
-    public ResponseEntity getAllAuctionResponse(){
+    public ResponseEntity getAllAuction(){
         GetAllAuctionResponse res = auctionServiceIpml.getAllAuction();
         return ResponseEntity.ok().body(res);
     }
@@ -36,21 +38,20 @@ public class AuctionController {
         AddAuctionResponse res= auctionServiceIpml.addAuction(req);
         return ResponseEntity.ok().body(res);
     }
-
-    @PutMapping("/updateAuction")
-    public ResponseEntity updateAuction(@RequestBody Auction auction){
-        UpdateAuctionResponse res =  auctionServiceIpml.updateAuction(auction);
-        return ResponseEntity.ok().body(res);
-    }
-
     @DeleteMapping("/deleteAuction")
-    public ResponseEntity deleteAuction(@RequestBody Auction auction){
-        DeleteAuctionResponse res = auctionServiceIpml.deleteAuction(auction);
+    public ResponseEntity deleteAuction(@RequestBody DeleteAuctionRequest req){
+        int idAuction = req.getIdAuction();
+        DeleteAuctionResponse res = auctionServiceIpml.deleteAuction(idAuction);
         return ResponseEntity.ok().body(res);
     }
     @GetMapping("/findAuctionByName")
     public ResponseEntity findAuctionByName(@RequestParam String name){
-        ArrayList<Auction> res = auctionServiceIpml.findAuctionbyName(name);
+        FindAuctionbyNameResponse res =auctionServiceIpml.findAuctionbyName(name);
+        return ResponseEntity.ok().body(res);
+    }
+    @GetMapping("/getAuctionInProgress")
+    public ResponseEntity getAuctionInProgress(){
+        GetAuctionInProgressResponse res = auctionServiceIpml.getAuctionInProgress();
         return ResponseEntity.ok().body(res);
     }
 }

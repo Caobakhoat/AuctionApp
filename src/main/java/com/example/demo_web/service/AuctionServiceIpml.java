@@ -6,25 +6,13 @@ import com.example.demo_web.model.Auction;
 import com.example.demo_web.repository.*;
 import com.example.demo_web.request.AddAuctionRequest;
 import com.example.demo_web.response.*;
-import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.transaction.Transactional;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -95,27 +83,25 @@ public class AuctionServiceIpml implements AuctionService{
 
 
     @Override
-    public DeleteAuctionResponse deleteAuction(Auction auction){
+    public DeleteAuctionResponse deleteAuction(int idAuction){
         DeleteAuctionResponse res = new DeleteAuctionResponse();
+        Auction auction = auctionRepository.findById(idAuction).orElse(null);
+        auction.setIsDelete(1);
+        auctionRepository.save(auction);
         res.setCode(messageConfig.CODE_SUCCESS);
         res.setMessage(messageConfig.MESSAGE_DELETEAUCTION);
-        res.setResult(1);
-        auctionRepository.save(auction);
+        res.setResult(true);
         return res;
     }
 
-    @Override
-    public UpdateAuctionResponse updateAuction(Auction auction) {
-        UpdateAuctionResponse res = new UpdateAuctionResponse();
-        res.setCode(messageConfig.CODE_SUCCESS);
-        res.setMessage(messageConfig.MESSAGE_UPDATEAUCTION);
-        res.setResult(auctionRepository.save(auction));
-        return res;
-    }
 
     @Override
-    public ArrayList<Auction> findAuctionbyName(String name) {
-        return auctionRepository.searchAuction(name);
+    public FindAuctionbyNameResponse findAuctionbyName(String name) {
+        FindAuctionbyNameResponse res = new FindAuctionbyNameResponse();
+        res.setCode(1);
+        res.setMessage("find auction success");
+        res.setResult(auctionRepository.searchAuction(name));
+        return res;
     }
 
     @Override
@@ -137,11 +123,21 @@ public class AuctionServiceIpml implements AuctionService{
 
     @Override
     public void deleteItemAuction(Item item) {
-     ArrayList<Auction> listAuction=  auctionRepository.listAuctionItemDelete(item.getId());
+     ArrayList<Auction> listAuction=  auctionRepository.getAuctionItemDelete(item.getId());
      for (Auction auction :listAuction){
          auction.setIsDelete(1);
          auctionRepository.save(auction);
         }
+    }
+
+    @Override
+    public GetAuctionInProgressResponse getAuctionInProgress() {
+        GetAuctionInProgressResponse res= new GetAuctionInProgressResponse();
+        res.setCode(1);
+        res.setMessage("get auctioninprogress success");
+        ArrayList<Auction>listAuction = auctionRepository.getAuctionProgressing();
+        res.setResult(listAuction);
+        return res;
     }
 
     @Scheduled(fixedDelay = 1000 )
