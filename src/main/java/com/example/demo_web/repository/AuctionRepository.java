@@ -12,9 +12,11 @@ import java.util.Optional;
 
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Integer> {
-    @Query(value = "select * from auctions where name like %:name% ",nativeQuery = true)
+    @Query(value = "select * from auctions where name like %:name% and status <> -1 ",nativeQuery = true)
     ArrayList<Auction> searchAuction(@Param("name") String name);
     @Query(value = "select * from auctions where id_item =  :idItem and status <> -1 ",nativeQuery = true)
-    ArrayList<Auction> listAuctionItemDelete(@Param("idItem") int idItem);
+    ArrayList<Auction> getAuctionItemDelete(@Param("idItem") int idItem);
+    @Query(value = "select * from auctions where status = 1",nativeQuery = true)
+    ArrayList<Auction> getAuctionProgressing();
 
 }

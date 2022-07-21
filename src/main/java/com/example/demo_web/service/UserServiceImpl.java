@@ -57,7 +57,6 @@ public class UserServiceImpl implements UserService,UserDetailsService {
                     );
             SecurityContextHolder.getContext().setAuthentication(authenticate);
             String accessToken = jwtTokenUtil.generateAccessToken(user);
-            System.out.println(accessToken);
             user =userRepository.findByUsername(user.getUsername());
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("token",accessToken);
