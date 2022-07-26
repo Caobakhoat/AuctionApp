@@ -19,7 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "auctions")
 public class Auction implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
