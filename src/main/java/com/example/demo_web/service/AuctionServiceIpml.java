@@ -101,22 +101,6 @@ public class AuctionServiceIpml implements AuctionService{
         return res;
     }
 
-    @Override
-    public void setWinner(Auction auction) {
-        ArrayList<Bids>listBid = bidsRepository.findByAuctionBids(auction);
-        int maxprice=0;
-        Bids maxbid = new Bids();
-        for(Bids bid :listBid){
-            if(bid.getBid_price()>maxprice){
-                maxprice=bid.getBid_price();
-                maxbid=bid;
-            }
-        }
-        transactionService.addTransaction(maxbid);
-        auction.setWinner(maxbid.getUserBids());
-        userService.updateBalanceUser(maxbid,maxprice);
-
-    }
 
     @Override
     public void deleteItemAuction(Item item) {
@@ -135,24 +119,5 @@ public class AuctionServiceIpml implements AuctionService{
         ArrayList<Auction>listAuction = auctionRepository.getAuctionProgressing();
         res.setResult(listAuction);
         return res;
-    }
-
-    @Scheduled(fixedDelay = 1000 )
-    public void checkStartStopAuction() {
-        ArrayList<Auction> listAuction = (ArrayList<Auction>) auctionRepository.findAll();
-        for(Auction auction :listAuction){
-            LocalDateTime now = LocalDateTime.now();
-            if(auction.getStatus()!=-1){
-                if(now.isAfter(auction.getTimeStart())){
-                    auction.setStatus(1);
-                    auctionRepository.save(auction);
-                }
-                if(now.isAfter(auction.getTimeEnd())){
-                    auction.setStatus(-1);
-                    auctionRepository.save(auction);
-                    setWinner(auction);
-                }
-            }
-        }
     }
 }
