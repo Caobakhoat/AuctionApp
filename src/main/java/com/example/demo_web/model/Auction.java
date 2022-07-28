@@ -25,8 +25,8 @@ public class Auction implements Serializable {
     private int id;
     @Column(name = "initPrice",nullable = false)
     private int initPrice;
-    @Column(name = "curentPrice",nullable = false)
-    private int curentPrice;
+    @Column(name = "currentPrice",nullable = false)
+    private int currentPrice;
     @Column(name = "timeStart",nullable = false)
     private LocalDateTime timeStart;
     @Column(name = "timeEnd",nullable = false)
