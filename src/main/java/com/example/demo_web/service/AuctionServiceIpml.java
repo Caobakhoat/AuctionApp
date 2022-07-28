@@ -26,8 +26,6 @@ public class AuctionServiceIpml implements AuctionService{
     @Autowired
     UserRepository userRepository;
     @Autowired
-    TransactionServiceImpl transactionService;
-    @Autowired
     BidsRepository bidsRepository;
     @Autowired
     MessageConfig messageConfig;
