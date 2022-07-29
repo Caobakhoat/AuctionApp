@@ -6,6 +6,7 @@ export interface Auction{
     userCreate:User;
     item:Item;
     initPrice:number;
+    currentPrice:number;
     timeStart:string;
     timeEnd:string;
     status:number;

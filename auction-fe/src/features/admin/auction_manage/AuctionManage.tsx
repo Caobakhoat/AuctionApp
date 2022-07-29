@@ -19,7 +19,6 @@ const AuctionManage = ({userCurrent}: Props) => {
     const [isShowAddAuctionModal, setIsShowAddAuctionModal] = useState(false);
 
     const [form] = Form.useForm();
-    const dateFormat = 'YYYY-MM-DD hh:mm:ss';
     const columns: ColumnsType<Auction> = [
         {
             title: 'Id',
@@ -122,7 +121,7 @@ const AuctionManage = ({userCurrent}: Props) => {
                     </Form.Item>
                     <Form.Item label="Start Date" name="timeStart"
                                rules={[{required: true, message: 'Please input Start Date!'}]}>
-                        <DatePicker showTime format={dateFormat}/>
+                        <DatePicker showTime/>
                     </Form.Item>
                     <Form.Item label="End Date" name="timeEnd"
                                rules={[{required: true, message: 'Please input End Date!'}]}>
