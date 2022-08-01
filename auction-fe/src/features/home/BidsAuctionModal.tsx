@@ -14,16 +14,23 @@ type Props = {
     user: User | null;
 }
 
-export type Bid= {
-    mess:string[];
-    currentPrice?:number;
+export type Bid = {
+    mess: string[];
+    currentPrice?: number;
+}
+
+export type BidEnded = {
+    mess: string;
+    maxBidPrice: number;
 }
 const BidsAuctionModal = ({onClose, visible, auction, user}: Props) => {
-    const [checkBids,setCheckBids]=useState(false);
+    const [checkBids, setCheckBids] = useState(false);
+    const [isDisabledBid, setIsDisabledBid] = useState(false);
     const [bids, setBids] = useState<Bid>({
-        mess:[],
-        currentPrice:auction?.currentPrice
+        mess: [],
+        currentPrice: auction?.currentPrice
     });
+    const [bidEnded, setBidEnded] = useState<BidEnded | null>(null);
     const bidsRef = useRef<InputRef>(null);
     const scrollRef = useRef<null | HTMLDivElement>(null);
     const navigate = useNavigate();
@@ -38,16 +45,23 @@ const BidsAuctionModal = ({onClose, visible, auction, user}: Props) => {
                 mess: "ok",
             });
             socket.on("joinRoomReceive", data => {
-                // console.log(data);
+                console.log(data);
             });
-            const bidReceive = (data: { mess:string,currentPrice:number }) => {
-                setBids(prevBids=>({
+            const bidReceive = (data: { mess: string, currentPrice: number }) => {
+                setBids(prevBids => ({
                     ...prevBids,
-                    mess:[...prevBids.mess,data.mess],
-                    currentPrice:data.currentPrice
+                    mess: [...prevBids.mess, data.mess],
+                    currentPrice: data.currentPrice
                 }));
             }
             socket.on("bidReceive", bidReceive);
+
+            const checkEndedReceive = (data: { mess: string, maxBidPrice: number }) => {
+                setBidEnded(() => ({mess: data.mess, maxBidPrice: data.maxBidPrice}));
+                setIsDisabledBid(true);
+            }
+
+            socket.on("checkEndedReceive", checkEndedReceive);
         }
         return () => {
             socket.close();
@@ -58,18 +72,16 @@ const BidsAuctionModal = ({onClose, visible, auction, user}: Props) => {
     }, [bids]);
     const handleBids = () => {
         const bidValue = bidsRef.current?.input?.value || "";
-        const currentPrice=bids.currentPrice ||auction?.currentPrice ||  0;
-        const userBalance=user?.balance||0;
-        if (parseInt(bidValue)> currentPrice && parseInt(bidValue)<userBalance) {
+        const currentPrice = bids.currentPrice || auction?.currentPrice || 0;
+        const userBalance = user?.balance || 0;
+        if (parseInt(bidValue) > currentPrice && parseInt(bidValue) < userBalance) {
             setCheckBids(false);
             socket.emit("bid", {
                 idAuction: auction?.id,
                 bidPrice: parseInt(bidValue),
                 idUser: user?.id
             });
-        }
-        else
-        {
+        } else {
             setCheckBids(true);
         }
     }
@@ -103,7 +115,15 @@ const BidsAuctionModal = ({onClose, visible, auction, user}: Props) => {
                                     <h4>Name: {auction?.item.name}</h4>
                                     <h4>Description:</h4>
                                     <p className="w-360">{auction?.item.description}</p>
-                                    <h3 className="text-yellow-100">Current Price: {bids.currentPrice || auction?.currentPrice} $</h3>
+                                    <h3 className="text-yellow-100">Current
+                                        Price: {bids.currentPrice || auction?.currentPrice} $</h3>
+                                    {
+                                        bidEnded && (<>
+                                                <h3 className="text-green-100">Max Bid Price: {bidEnded.maxBidPrice} $</h3>
+                                                <h3 className="text-green-100">{bidEnded.mess}</h3>
+                                            </>
+                                        )
+                                    }
                                 </div>
                             </div>
                             {
@@ -112,7 +132,8 @@ const BidsAuctionModal = ({onClose, visible, auction, user}: Props) => {
 
                             <div className="d-flex">
                                 <Input ref={bidsRef} type="number" placeholder="Bid Price" className="w-240 mr-8"/>
-                                <Button type="primary" onClick={() => handleBids()} >Bids</Button>
+                                <Button type="primary" onClick={() => handleBids()}
+                                        disabled={isDisabledBid}>Bids</Button>
                             </div>
                         </div>
                     </Col>
